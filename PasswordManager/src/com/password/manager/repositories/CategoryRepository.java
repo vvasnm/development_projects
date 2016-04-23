@@ -27,9 +27,9 @@ public class CategoryRepository {
 	
 	public void Add(String categoryName)
 	{
-		qData.setSelectedCategory(categoryName.toUpperCase());
+		qData.setSelectedCategory(categoryName);
 		dbActions.insertIntocategory(qData);
-		categories.add(new Category(categoryName.toUpperCase()));					
+		categories.add(new Category(categoryName));					
 	}
 	
 	public String[] GetAll(){

@@ -33,7 +33,7 @@ public class Category {
 	@Override
 	public String toString()
 	{
-		return _name + " ( " + _totalAccounts +" )" ;
+		return _name.toUpperCase() + " ( " + _totalAccounts +" )" ;
 		
 	}
 

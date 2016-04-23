@@ -16,8 +16,7 @@ public class CategoryRepository {
 	{
 		qData = dbActions.getCategoriesFromDB();
 		if(qData.getCategory()!=null){		
-			for(String itm: qData.getCategory()){				
-							categories.add(new Category(itm));
+			for(String itm: qData.getCategory()){
 				Category cat =	new Category(itm);
 				int cnt = dbActions.accountCount(itm);
 				cat.setAccountCount(cnt);

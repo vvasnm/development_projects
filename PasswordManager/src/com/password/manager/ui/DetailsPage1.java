@@ -14,7 +14,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import com.password.manager.bean.QueryData;
-//import com.password.manager.dao.impl.CreateTablesImpl;
 import com.password.manager.dao.impl.DBActionsImpl;
 import com.password.manager.util.Constants;
 import com.password.manager.util.Utilities;
@@ -29,8 +28,6 @@ import org.eclipse.swt.widgets.List;
 
 public class DetailsPage1 extends Dialog{
     	
-	
-
 	protected Object result;
 	protected Shell shlDetails;
 	private Text txtAccountName,txtUsername,txtPassword,txtRetypePassword,txtAcc,txtUname,txtPass;
@@ -44,16 +41,12 @@ public class DetailsPage1 extends Dialog{
 	private Label lblExistingCategory;
 	private Button btnUpdate;  
     private int i=0,j=0;
-  
-     
+      
     Utilities util_1 = new Utilities();
     
 	public DetailsPage1(Shell parent, int style) {
-		super(parent, style);
-		//this.lstCategory = listCategory;
-		
+		super(parent, style);		
 	}	
-
 	public Object open() {
 		createContents();
 		shlDetails.open();
@@ -89,10 +82,8 @@ public class DetailsPage1 extends Dialog{
 		lblExistingCategory = new Label(cmpAccounts, SWT.NONE);
 		lblExistingCategory.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		lblExistingCategory.setText("Existing Category");	
-		
-		
+
 		lstCategory = new List(cmpAccounts, SWT.BORDER);
-		
 		GridData gd_lstCategory = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lstCategory.heightHint = 270;
 		gd_lstCategory.widthHint = 296;
@@ -107,8 +98,7 @@ public class DetailsPage1 extends Dialog{
 				String val = itm + " - " + Integer.toString(cnt);				
 				values[i] = val;i++;												
 			} 
-			lstCategory.setItems(values);
-			
+			lstCategory.setItems(values);			
 		}		
 		lstCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -138,7 +128,7 @@ public class DetailsPage1 extends Dialog{
 				}
 			}
 		});			
-	    setListCat(lstCategory);
+	   // setListCat(lstCategory);
 	    
 		lblSelectTheCategory = new Label(cmpAccounts, SWT.NONE);
 		lblSelectTheCategory.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD | SWT.ITALIC));
@@ -193,8 +183,7 @@ public class DetailsPage1 extends Dialog{
 					txtUname.setText(dbvalues.getUserNameDB());
 					txtPass.setText(dbvalues.getPassWordDB());
 					txtPass.setVisible(false);
-					btnDeleteAccInfo.setEnabled(true);
-					
+					btnDeleteAccInfo.setEnabled(true);					
 				}
 				else{
 					MessageBox mBox = new MessageBox(shlDetails);
@@ -324,9 +313,7 @@ public class DetailsPage1 extends Dialog{
 					txtPassword.setEnabled(false);				   
 				}				    
 			}
-		});
-		
-		
+		});		
 		Label lblPassword0 = new Label(cmpAddAccounts, SWT.NONE);
 		lblPassword0.setText("Password :");
 		
@@ -601,13 +588,11 @@ public class DetailsPage1 extends Dialog{
 					MessageBox mBox = new MessageBox(shlDetails);
 					mBox.setMessage(Constants.EMPTY_FIELDS);
 					mBox.open();
-				}
-				
+				}				
 			}
 		});
 		btnUpdate.setText("Update");
 		new Label(cmpView, SWT.NONE);
-
 	}	
 	private void clearWidgets(){
 		txtAccountName.setText("");
@@ -617,8 +602,7 @@ public class DetailsPage1 extends Dialog{
 		txtRetypePassword.setText("");
 		txtAcc.setText("");
 		txtUname.setText("");
-		txtPass.setText("");
-		
+		txtPass.setText("");	
 	}
 	private QueryData setNewAccountDetails(QueryData qData){
 		qData.setPmHead(txtAccountName.getText());
@@ -665,14 +649,14 @@ public class DetailsPage1 extends Dialog{
 		}		
 		return isExist;	
 	}
-	public List getListCat() {
+	/*public List getListCat() {
 		System.out.println("inside get");
 		return lstCategory;
 	}
 	public void setListCat(List listCat) {
 		this.lstCategory = listCat;
 		System.out.println(listCat.getItemCount());
-	}
+	}*/
 	
 	
 }

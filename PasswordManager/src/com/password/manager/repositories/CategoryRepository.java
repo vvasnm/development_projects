@@ -11,8 +11,14 @@ public class CategoryRepository {
 	private ArrayList<Category> categories = new ArrayList<Category>();
 	private QueryData qData = new QueryData(); 
 	private DBActionsImpl dbActions = new DBActionsImpl();
+	private static CategoryRepository _categoryRepository = new CategoryRepository(); 
 	
-	public CategoryRepository()
+	public static CategoryRepository getInstance()
+	{
+		return _categoryRepository;
+	}	
+	
+	private CategoryRepository()
 	{
 		qData = dbActions.getCategoriesFromDB();
 		if(qData.getCategory()!=null){		

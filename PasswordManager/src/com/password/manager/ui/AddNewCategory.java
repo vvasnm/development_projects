@@ -13,6 +13,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
 import com.password.manager.bean.QueryData;
 import com.password.manager.dao.impl.DBActionsImpl;
+import com.password.manager.repositories.CategoryRepository;
 import com.password.manager.util.Constants;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -77,9 +78,10 @@ public class AddNewCategory extends Dialog {
 		GridData gd_listExistingCategory = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_listExistingCategory.heightHint = 173;
 		listExistingCategory.setLayoutData(gd_listExistingCategory);		
-		if(qdata.getCategory()!=null){
-			listExistingCategory.setItems(qdata.getCategory());
-		}								
+//		if(qdata.getCategory()!=null){
+//			listExistingCategory.setItems(qdata.getCategory());
+//		}
+		listExistingCategory.setItems(CategoryRepository.getInstance().GetAll());
 		lblNewCategory = new Label(cmpCategory, SWT.NONE);
 		lblNewCategory.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNewCategory.setText("Add New Category :");
@@ -115,44 +117,47 @@ public class AddNewCategory extends Dialog {
 		btnSaveCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				boolean isCatExist = false;
-				String [] categories = listExistingCategory.getItems();
+				//boolean isCatExist = false;
+				//String [] categories = listExistingCategory.getItems();
 				if((txtAddNewCategory.getText()!=null) && (txtAddNewCategory.getText()!=""))
 				{
-					for (String cat: categories){
-						if(cat.equals(txtAddNewCategory.getText())){
-							isCatExist = true;
-							break;
-						}
-					}
-					if(!isCatExist)
-					{   
-						int i=0;
-						QueryData qdata = new QueryData();					
-						DBActionsImpl dbActions_2 = new DBActionsImpl();
-						qdata.setSelectedCategory(txtAddNewCategory.getText());
-						dbActions_2.insertIntocategory(qdata);							
-						QueryData qdata1 = dbActions_2.getCategoriesFromDB();
-						if(qdata1.getCategory()!=null)
-						{						
-							listExistingCategory.setItems(qdata1.getCategory());
-							txtAddNewCategory.setText("");			
-							int len = qdata1.getCategory().length;						
-							String [] values = new  String [len];
-							for(String itm: qdata1.getCategory())
-							{				
-								int cnt = dbActions_2.accountCount(itm);
-								String val = itm + " - " + Integer.toString(cnt);				
-								values[i] = val;
-								i++;												
-							}
-						}
-					}
-					else{
-						MessageBox mBox = new MessageBox(shlAddNewCategory);
-						mBox.setMessage(Constants.CATEGORY_EXIST);
-						mBox.open();
-					}
+					CategoryRepository.getInstance().Add(txtAddNewCategory.getText());
+					listExistingCategory.setItems(CategoryRepository.getInstance().GetAll());
+					txtAddNewCategory.setText("");
+//					for (String cat: categories){
+//						if(cat.equals(txtAddNewCategory.getText())){
+//							isCatExist = true;
+//							break;
+//						}
+//					}
+//					if(!isCatExist)
+//					{   
+//						int i=0;
+//						QueryData qdata = new QueryData();					
+//						DBActionsImpl dbActions_2 = new DBActionsImpl();
+//						qdata.setSelectedCategory(txtAddNewCategory.getText());
+//						dbActions_2.insertIntocategory(qdata);							
+//						QueryData qdata1 = dbActions_2.getCategoriesFromDB();
+//						if(qdata1.getCategory()!=null)
+//						{						
+//							listExistingCategory.setItems(qdata1.getCategory());
+//							txtAddNewCategory.setText("");			
+//							int len = qdata1.getCategory().length;						
+//							String [] values = new  String [len];
+//							for(String itm: qdata1.getCategory())
+//							{				
+//								int cnt = dbActions_2.accountCount(itm);
+//								String val = itm + " - " + Integer.toString(cnt);				
+//								values[i] = val;
+//								i++;												
+//							}
+//						}
+//					}
+//					else{
+//						MessageBox mBox = new MessageBox(shlAddNewCategory);
+//						mBox.setMessage(Constants.CATEGORY_EXIST);
+//						mBox.open();
+//					}
 				}else{
 					MessageBox mBox = new MessageBox(shlAddNewCategory);
 					mBox.setMessage(Constants.EMPTY_FIELDS);

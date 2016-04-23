@@ -41,14 +41,13 @@ public class DetailsPage1 extends Dialog{
 	private List lstCategory;
 	private Label lblExistingCategory;
 	private Button btnUpdate;  
-    private int i=0,j=0;
-    private CategoryRepository _categoryRepository;
+    private int i=0,j=0;    
       
     Utilities util_1 = new Utilities();
     
 	public DetailsPage1(Shell parent, int style) {
-		super(parent, style);		
-		_categoryRepository = new CategoryRepository();
+		super(parent, style);	
+		
 	}	
 	public Object open() {
 		createContents();
@@ -103,7 +102,7 @@ public class DetailsPage1 extends Dialog{
 //			} 
 //			lstCategory.setItems(values);			
 //		}		
-		lstCategory.setItems(_categoryRepository.GetAll());
+		lstCategory.setItems(CategoryRepository.getInstance().GetAll());
 		lstCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

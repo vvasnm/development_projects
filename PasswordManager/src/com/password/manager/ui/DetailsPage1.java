@@ -2,7 +2,6 @@ package com.password.manager.ui;
 
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.SWT;
@@ -14,7 +13,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.password.manager.bean.Category;
 import com.password.manager.bean.QueryData;
 import com.password.manager.dao.impl.DBActionsImpl;
@@ -30,7 +28,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Listener;
+
 
 public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
     	
@@ -46,7 +44,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 	private List lstCategory;
 	private Label lblExistingCategory;
 	private Button btnUpdate;  
-    private int i=0,j=0;    
+    private int j=0;    
       
     Utilities util_1 = new Utilities();
     
@@ -124,11 +122,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 					mBox.open();
 				}
 			}
-		});			
-	   // setListCat(lstCategory);
-		
-		
-	    
+		});			  
 		lblSelectTheCategory = new Label(cmpAccounts, SWT.NONE);
 		lblSelectTheCategory.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD | SWT.ITALIC));
 		GridData gd_lblSelectTheCategory = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -144,8 +138,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 		btnManageCategory.setLayoutData(gd_btnManageCategory);
 		btnManageCategory.setText("Manage Cat");
 		btnManageCategory.addSelectionListener(new SelectionAdapter() {			
-			public void widgetSelected(SelectionEvent e) {				
-				//Shell shell = new Shell();				
+			public void widgetSelected(SelectionEvent e) {											
 				AddNewCategory category_dialog = new AddNewCategory(shlDetails, SWT.NONE);				
 				category_dialog.open();					
 			}
@@ -267,7 +260,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 				}
 				else{
 					txtUsername.setEnabled(false);
-				   }									
+				}									
 			}
 			public void keyReleased(KeyEvent ke) {
 				if((txtAccountName!=null) && (txtAccountName.getText()!="")){
@@ -277,8 +270,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 					txtUsername.setEnabled(false);				   
 				}				    
 			}
-		});
-		
+		});		
 		Label lblUsername0 = new Label(cmpAddAccounts, SWT.NONE);
 		lblUsername0.setText("Username :");
 		
@@ -295,12 +287,11 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 					txtPassword.setEnabled(true);
 					lstCategory.deselectAll();
 					listAccounts.removeAll();
-					btnDeleteAccInfo.setEnabled(false);
-					
+					btnDeleteAccInfo.setEnabled(false);	
 				}
 				else{
 					txtPassword.setEnabled(false);
-				   }									
+				}									
 			}
 			public void keyReleased(KeyEvent ke) {
 				if((txtUsername!=null) && (txtUsername.getText()!="")){
@@ -330,7 +321,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 				}
 				else{
 					txtRetypePassword.setEnabled(false);
-				   }									
+				}									
 			}
 			public void keyReleased(KeyEvent ke) {
 				if((txtPassword!=null) && (txtPassword.getText()!="")){
@@ -340,8 +331,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 					txtRetypePassword.setEnabled(false);				   
 				}				    
 			}
-		});
-		
+		});		
 		Label lblReTypePassword = new Label(cmpAddAccounts, SWT.NONE);
 		lblReTypePassword.setText("Re Type Pass :");
 		
@@ -360,8 +350,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 				}
 				else{
 					cmbCategory.setEnabled(false);	
-					btnAddAccount.setEnabled(false);
-					
+					btnAddAccount.setEnabled(false);					
 				   }									
 			}
 			public void keyReleased(KeyEvent ke) {
@@ -374,8 +363,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 					btnAddAccount.setEnabled(false);
 				}				    
 			}
-		});
-		
+		});		
 		Label lblCategory = new Label(cmpAddAccounts, SWT.NONE);
 		lblCategory.setText("Category :");
 		
@@ -396,11 +384,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {				
 			}
-		});
-		
-											
-		
-				
+		});																			
 		DBActionsImpl dbActions_1 = new DBActionsImpl();
 		QueryData qdata = dbActions_1.getCategoriesFromDB();
 		if(qdata.getCategory()!=null){
@@ -420,8 +404,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 			public void widgetSelected(SelectionEvent e) {
 				Utilities util = new Utilities();
 				util.writeLogFile("\nINFO:Add Account Clicked.");
-				DBActionsImpl dbActions = new DBActionsImpl();
-					
+				DBActionsImpl dbActions = new DBActionsImpl();					
 				QueryData qdata1 = new QueryData();
 				QueryData qdata2 = setNewAccountDetails( qdata1);				
 				if (isDataNotNull()){									
@@ -445,8 +428,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 						}else {
 							MessageBox mBox = new MessageBox(shlDetails);
 							mBox.setMessage(Constants.ACCOUNT_EXIST);
-							mBox.open();
-							
+							mBox.open();							
 						}													
 					}					
 					else {
@@ -518,7 +500,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 				}
 				else{
 					btnUpdate.setEnabled(false);						
-				   }									
+				}									
 			}
 			public void keyReleased(KeyEvent ke) {
 				if((txtPass!=null) && (txtPass.getText()!="")){
@@ -528,8 +510,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 					btnUpdate.setEnabled(false);						
 				}				    
 			}
-		});
-		
+		});		
 		btnEdit = new Button(cmpView, SWT.CHECK);
 		GridData gd_btnEdit = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnEdit.heightHint = 30;
@@ -542,22 +523,16 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 				Button btn = (Button) e.getSource();
 				if(btn.getSelection()){								
 					txtPass.setEnabled(true);
-					txtPass.setVisible(true);
-					
-					//txtAcc.setEnabled(true);
-					//txtUname.setEnabled(true);
+					txtPass.setVisible(true);									
 				}
 				else{
-					txtPass.setEnabled(false);
-				//	txtAcc.setText("");
-					//txtUname.setText("");
+					txtPass.setEnabled(false);				
 					txtPass.setVisible(false);
 					btnUpdate.setEnabled(false);	
 				}
 			}
 		});
-		txtPass.setEnabled(false);
-		
+		txtPass.setEnabled(false);		
 		Label lblUseAboveCheck = new Label(cmpView, SWT.NONE);
 		GridData gd_lblUseAboveCheck = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblUseAboveCheck.widthHint = 184;
@@ -648,19 +623,9 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 		}		
 		return isExist;	
 	}
-	/*public List getListCat() {
-		System.out.println("inside get");
-		return lstCategory;
-	}
-	public void setListCat(List listCat) {
-		this.lstCategory = listCat;
-		System.out.println(listCat.getItemCount());
-	}*/
 	@Override
 	public void categoryAdded(Category cat) {
 		lstCategory.add(cat.toString(), lstCategory.getItemCount());
-	}
-	
-	
+	}		
 }
 

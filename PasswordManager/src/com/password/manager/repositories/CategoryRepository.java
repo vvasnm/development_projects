@@ -1,7 +1,6 @@
 package com.password.manager.repositories;
 
 import java.util.ArrayList;
-
 import com.password.manager.bean.Category;
 import com.password.manager.bean.QueryData;
 import com.password.manager.dao.impl.DBActionsImpl;
@@ -9,7 +8,7 @@ import com.password.manager.listeners.IListenCategoryEvents;
 
 public class CategoryRepository {
 	
-	private ArrayList<Category> categories = new ArrayList<Category>();
+	private ArrayList<Category> categories = new ArrayList<Category>();	
 	private QueryData qData = new QueryData(); 
 	private DBActionsImpl dbActions = new DBActionsImpl();
 	private static CategoryRepository _categoryRepository = new CategoryRepository();
@@ -32,7 +31,6 @@ public class CategoryRepository {
 			}
 		}		
 	}
-	
 	public void Add(String categoryName)
 	{
 		qData.setSelectedCategory(categoryName);
@@ -41,7 +39,7 @@ public class CategoryRepository {
 		categories.add(cat);
 		 for (IListenCategoryEvents categoryEventListener : categoryEventListeners)
 			 categoryEventListener.categoryAdded(cat);	
-		 }
+    }
 	
 	public String[] GetAll(){
 		String[] items = new String[categories.size()];

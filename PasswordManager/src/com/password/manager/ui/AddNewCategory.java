@@ -11,8 +11,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
-import com.password.manager.bean.QueryData;
-import com.password.manager.dao.impl.DBActionsImpl;
 import com.password.manager.repositories.CategoryRepository;
 import com.password.manager.util.Constants;
 import org.eclipse.swt.widgets.Button;
@@ -30,14 +28,10 @@ public class AddNewCategory extends Dialog {
 	private Label lblNewLabel,lblNewCategory,lblCheckTheExisting;
 	private Composite cmpButtons,cmpInstructions,cmpCategory;
 	private List listExistingCategory;// this has to be propagated up
-	
-	
-   
+	  
 	public AddNewCategory(Shell parent, int style) {
-		super(parent, style);	
-		
+		super(parent, style);		
 	}
-	
 	public Object open() {
 		createContents();
 		shlAddNewCategory.open();
@@ -56,9 +50,7 @@ public class AddNewCategory extends Dialog {
 		}
 		return result;
 	}
-	private void createContents() {
-		DBActionsImpl dbActions_1 = new DBActionsImpl();
-		QueryData qdata = dbActions_1.getCategoriesFromDB();
+	private void createContents() {	
 		shlAddNewCategory = new Shell(getParent(), SWT.MIN | SWT.TITLE | SWT.PRIMARY_MODAL);
 		shlAddNewCategory.setSize(450, 400);
 		shlAddNewCategory.setText("Add New Category Dialog");
@@ -78,9 +70,6 @@ public class AddNewCategory extends Dialog {
 		GridData gd_listExistingCategory = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_listExistingCategory.heightHint = 173;
 		listExistingCategory.setLayoutData(gd_listExistingCategory);		
-//		if(qdata.getCategory()!=null){
-//			listExistingCategory.setItems(qdata.getCategory());
-//		}
 		listExistingCategory.setItems(CategoryRepository.getInstance().GetAll());
 		lblNewCategory = new Label(cmpCategory, SWT.NONE);
 		lblNewCategory.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -116,9 +105,7 @@ public class AddNewCategory extends Dialog {
 		btnSaveCategory.setText("Click to Save Category");
 		btnSaveCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				//boolean isCatExist = false;
-				//String [] categories = listExistingCategory.getItems();
+			public void widgetSelected(SelectionEvent e) {			
 				if((txtAddNewCategory.getText()!=null) && (txtAddNewCategory.getText()!=""))
 				{
 					CategoryRepository.getInstance().Add(txtAddNewCategory.getText());
@@ -144,38 +131,5 @@ public class AddNewCategory extends Dialog {
 				mBox.open();
 			}
 		});						
-	}	
-	
-	
-
-	/*public void setTextAreaClients(List clients,int cnt){
-	    System.out.println("count in cat:" + cnt);
-		this.clients = clients;
-	    if(clients!=null){
-	    	int cnt1 = clients.getItemCount();
-		    System.out.println("CNT: " + cnt1);
-		    System.out.println("Inside set clients..");
-		    int i=0;
-			DBActionsImpl dbActions_2 = new DBActionsImpl();
-			QueryData qdata = dbActions_2.getCategoriesFromDB();
-			if(qdata.getCategory()!=null){						
-				listExistingCategory.setItems(qdata.getCategory());
-				txtAddNewCategory.setText("");			
-				int len = qdata.getCategory().length;						
-				String [] values = new  String [len];
-				for(String itm: qdata.getCategory()){				
-					int cnt = dbActions_2.accountCount(itm);
-					String val = itm + " - " + Integer.toString(cnt);				
-					values[i] = val;
-					i++;												
-				}clients.setItems(values);
-											 		     
-			}	
-		}
-	    
-	}*/
-	
-	
-	
-      
+	}	     
 }

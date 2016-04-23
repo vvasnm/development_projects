@@ -670,8 +670,7 @@ public class DetailsPage1 extends Dialog implements IListenAddCategory{
 	}*/
 	@Override
 	public void categoryAdded(Category cat) {
-		lstCategory.removeAll();
-		lstCategory.setItems(CategoryRepository.getInstance().GetAll());
+		lstCategory.add(cat.toString(), lstCategory.getItemCount());
 	}
 	
 	

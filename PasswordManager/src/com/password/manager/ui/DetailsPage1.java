@@ -2,6 +2,7 @@ package com.password.manager.ui;
 
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.SWT;
@@ -13,8 +14,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
+import com.password.manager.bean.Category;
 import com.password.manager.bean.QueryData;
 import com.password.manager.dao.impl.DBActionsImpl;
+import com.password.manager.listeners.IListenAddCategory;
 import com.password.manager.repositories.CategoryRepository;
 import com.password.manager.util.Constants;
 import com.password.manager.util.Utilities;
@@ -26,8 +30,9 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 
-public class DetailsPage1 extends Dialog{
+public class DetailsPage1 extends Dialog implements IListenAddCategory{
     	
 	protected Object result;
 	protected Shell shlDetails;
@@ -47,6 +52,7 @@ public class DetailsPage1 extends Dialog{
     
 	public DetailsPage1(Shell parent, int style) {
 		super(parent, style);	
+		CategoryRepository.getInstance().addListener(this);
 		
 	}	
 	public Object open() {
@@ -132,6 +138,8 @@ public class DetailsPage1 extends Dialog{
 			}
 		});			
 	   // setListCat(lstCategory);
+		
+		
 	    
 		lblSelectTheCategory = new Label(cmpAccounts, SWT.NONE);
 		lblSelectTheCategory.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD | SWT.ITALIC));
@@ -660,6 +668,11 @@ public class DetailsPage1 extends Dialog{
 		this.lstCategory = listCat;
 		System.out.println(listCat.getItemCount());
 	}*/
+	@Override
+	public void categoryAdded(Category cat) {
+		lstCategory.removeAll();
+		lstCategory.setItems(CategoryRepository.getInstance().GetAll());
+	}
 	
 	
 }

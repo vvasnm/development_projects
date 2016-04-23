@@ -2,6 +2,6 @@ package com.password.manager.listeners;
 
 import com.password.manager.bean.Category;
 
-public interface IListenAddCategory {
+public interface IListenCategoryEvents {
 	void categoryAdded(Category category);
 }

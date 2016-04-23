@@ -18,7 +18,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import com.password.manager.bean.Category;
 import com.password.manager.bean.QueryData;
 import com.password.manager.dao.impl.DBActionsImpl;
-import com.password.manager.listeners.IListenAddCategory;
+import com.password.manager.listeners.IListenCategoryEvents;
 import com.password.manager.repositories.CategoryRepository;
 import com.password.manager.util.Constants;
 import com.password.manager.util.Utilities;
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 
-public class DetailsPage1 extends Dialog implements IListenAddCategory{
+public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
     	
 	protected Object result;
 	protected Shell shlDetails;

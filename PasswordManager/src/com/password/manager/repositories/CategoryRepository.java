@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.password.manager.bean.Category;
 import com.password.manager.bean.QueryData;
 import com.password.manager.dao.impl.DBActionsImpl;
-import com.password.manager.listeners.IListenAddCategory;
+import com.password.manager.listeners.IListenCategoryEvents;
 
 public class CategoryRepository {
 	
@@ -13,7 +13,7 @@ public class CategoryRepository {
 	private QueryData qData = new QueryData(); 
 	private DBActionsImpl dbActions = new DBActionsImpl();
 	private static CategoryRepository _categoryRepository = new CategoryRepository();
-	private ArrayList<IListenAddCategory> addCategoryListeners = new ArrayList<IListenAddCategory>();
+	private ArrayList<IListenCategoryEvents> categoryEventListeners = new ArrayList<IListenCategoryEvents>();
 	
 	public static CategoryRepository getInstance()
 	{
@@ -39,8 +39,8 @@ public class CategoryRepository {
 		dbActions.insertIntocategory(qData);
 		Category cat = new Category(categoryName);
 		categories.add(cat);
-		 for (IListenAddCategory addCategoryListener : addCategoryListeners)
-			 addCategoryListener.categoryAdded(cat);	
+		 for (IListenCategoryEvents categoryEventListener : categoryEventListeners)
+			 categoryEventListener.categoryAdded(cat);	
 		 }
 	
 	public String[] GetAll(){
@@ -53,8 +53,8 @@ public class CategoryRepository {
 		return items;
 	}
 	
-	public void addListener(IListenAddCategory listener)
+	public void addListener(IListenCategoryEvents listener)
 	{
-		addCategoryListeners.add(listener);	
+		categoryEventListeners.add(listener);	
 	}
 }

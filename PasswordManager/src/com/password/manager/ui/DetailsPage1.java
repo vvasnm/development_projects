@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import com.password.manager.bean.QueryData;
 import com.password.manager.dao.impl.DBActionsImpl;
+import com.password.manager.repositories.CategoryRepository;
 import com.password.manager.util.Constants;
 import com.password.manager.util.Utilities;
 import org.eclipse.swt.events.KeyAdapter;
@@ -41,11 +42,13 @@ public class DetailsPage1 extends Dialog{
 	private Label lblExistingCategory;
 	private Button btnUpdate;  
     private int i=0,j=0;
+    private CategoryRepository _categoryRepository;
       
     Utilities util_1 = new Utilities();
     
 	public DetailsPage1(Shell parent, int style) {
 		super(parent, style);		
+		_categoryRepository = new CategoryRepository();
 	}	
 	public Object open() {
 		createContents();
@@ -88,18 +91,19 @@ public class DetailsPage1 extends Dialog{
 		gd_lstCategory.heightHint = 270;
 		gd_lstCategory.widthHint = 296;
 		lstCategory.setLayoutData(gd_lstCategory);		
-		DBActionsImpl dbActions_3 = new DBActionsImpl();
-		QueryData qdata1 = dbActions_3.getCategoriesFromDB();
-		if(qdata1.getCategory()!=null){
-		int len = qdata1.getCategory().length;
-		String [] values = new  String [len];
-			for(String itm: qdata1.getCategory()){				
-				int cnt = dbActions_3.accountCount(itm);
-				String val = itm + " - " + Integer.toString(cnt);				
-				values[i] = val;i++;												
-			} 
-			lstCategory.setItems(values);			
-		}		
+//		DBActionsImpl dbActions_3 = new DBActionsImpl();
+//		QueryData qdata1 = dbActions_3.getCategoriesFromDB();
+//		if(qdata1.getCategory()!=null){
+//		int len = qdata1.getCategory().length;
+//		String [] values = new  String [len];
+//			for(String itm: qdata1.getCategory()){				
+//				int cnt = dbActions_3.accountCount(itm);
+//				String val = itm + " - " + Integer.toString(cnt);				
+//				values[i] = val;i++;												
+//			} 
+//			lstCategory.setItems(values);			
+//		}		
+		lstCategory.setItems(_categoryRepository.GetAll());
 		lstCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

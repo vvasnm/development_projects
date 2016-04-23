@@ -28,7 +28,7 @@ public class AddNewCategory extends Dialog {
 	private Button btnSaveCategory,btnDeleteCategory;
 	private Label lblNewLabel,lblNewCategory,lblCheckTheExisting;
 	private Composite cmpButtons,cmpInstructions,cmpCategory;
-	private List listExistingCategory;
+	private List listExistingCategory;// this has to be propagated up
 	
 	
    

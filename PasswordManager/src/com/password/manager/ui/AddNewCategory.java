@@ -123,41 +123,7 @@ public class AddNewCategory extends Dialog {
 				{
 					CategoryRepository.getInstance().Add(txtAddNewCategory.getText());
 					listExistingCategory.setItems(CategoryRepository.getInstance().GetAll());
-					txtAddNewCategory.setText("");
-//					for (String cat: categories){
-//						if(cat.equals(txtAddNewCategory.getText())){
-//							isCatExist = true;
-//							break;
-//						}
-//					}
-//					if(!isCatExist)
-//					{   
-//						int i=0;
-//						QueryData qdata = new QueryData();					
-//						DBActionsImpl dbActions_2 = new DBActionsImpl();
-//						qdata.setSelectedCategory(txtAddNewCategory.getText());
-//						dbActions_2.insertIntocategory(qdata);							
-//						QueryData qdata1 = dbActions_2.getCategoriesFromDB();
-//						if(qdata1.getCategory()!=null)
-//						{						
-//							listExistingCategory.setItems(qdata1.getCategory());
-//							txtAddNewCategory.setText("");			
-//							int len = qdata1.getCategory().length;						
-//							String [] values = new  String [len];
-//							for(String itm: qdata1.getCategory())
-//							{				
-//								int cnt = dbActions_2.accountCount(itm);
-//								String val = itm + " - " + Integer.toString(cnt);				
-//								values[i] = val;
-//								i++;												
-//							}
-//						}
-//					}
-//					else{
-//						MessageBox mBox = new MessageBox(shlAddNewCategory);
-//						mBox.setMessage(Constants.CATEGORY_EXIST);
-//						mBox.open();
-//					}
+					txtAddNewCategory.setText("");					
 				}else{
 					MessageBox mBox = new MessageBox(shlAddNewCategory);
 					mBox.setMessage(Constants.EMPTY_FIELDS);

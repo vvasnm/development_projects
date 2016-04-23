@@ -95,19 +95,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 		GridData gd_lstCategory = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lstCategory.heightHint = 270;
 		gd_lstCategory.widthHint = 296;
-		lstCategory.setLayoutData(gd_lstCategory);		
-//		DBActionsImpl dbActions_3 = new DBActionsImpl();
-//		QueryData qdata1 = dbActions_3.getCategoriesFromDB();
-//		if(qdata1.getCategory()!=null){
-//		int len = qdata1.getCategory().length;
-//		String [] values = new  String [len];
-//			for(String itm: qdata1.getCategory()){				
-//				int cnt = dbActions_3.accountCount(itm);
-//				String val = itm + " - " + Integer.toString(cnt);				
-//				values[i] = val;i++;												
-//			} 
-//			lstCategory.setItems(values);			
-//		}		
+		lstCategory.setLayoutData(gd_lstCategory);
 		lstCategory.setItems(CategoryRepository.getInstance().GetAll());
 		lstCategory.addSelectionListener(new SelectionAdapter() {
 			@Override

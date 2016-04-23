@@ -11,8 +11,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
-
-import com.password.manager.bean.ObjData;
 import com.password.manager.bean.QueryData;
 import com.password.manager.dao.impl.DBActionsImpl;
 import com.password.manager.util.Constants;
@@ -31,9 +29,12 @@ public class AddNewCategory extends Dialog {
 	private Label lblNewLabel,lblNewCategory,lblCheckTheExisting;
 	private Composite cmpButtons,cmpInstructions,cmpCategory;
 	private List listExistingCategory;
+	
+	
    
 	public AddNewCategory(Shell parent, int style) {
 		super(parent, style);	
+		
 	}
 	
 	public Object open() {
@@ -75,9 +76,7 @@ public class AddNewCategory extends Dialog {
 		listExistingCategory = new List(cmpCategory, SWT.BORDER | SWT.V_SCROLL);
 		GridData gd_listExistingCategory = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_listExistingCategory.heightHint = 173;
-		listExistingCategory.setLayoutData(gd_listExistingCategory);
-		/*DBActionsImpl dbActions_1 = new DBActionsImpl();
-		QueryData qdata = dbActions_1.getCategoriesFromDB();*/
+		listExistingCategory.setLayoutData(gd_listExistingCategory);		
 		if(qdata.getCategory()!=null){
 			listExistingCategory.setItems(qdata.getCategory());
 		}								
@@ -126,40 +125,28 @@ public class AddNewCategory extends Dialog {
 							break;
 						}
 					}
-					if(!isCatExist){   
+					if(!isCatExist)
+					{   
 						int i=0;
-						QueryData qdata = new QueryData();
-					//	ObjData od = new ObjData();
+						QueryData qdata = new QueryData();					
 						DBActionsImpl dbActions_2 = new DBActionsImpl();
-						
 						qdata.setSelectedCategory(txtAddNewCategory.getText());
-						dbActions_2.insertIntocategory(qdata);
-						Shell shell = new Shell();
-						DetailsPage1 page = new DetailsPage1(shell, 0);
-					     AddNewCategory aCat=new AddNewCategory(shlAddNewCategory, 0);
-//Step 4:					     
-					     //page.updateListCategory(aCat);
-//Step 4:	
-						/*qdata = dbActions_2.getCategoriesFromDB();
-						if(qdata.getCategory()!=null){						
-							listExistingCategory.setItems(qdata.getCategory());
-							txtAddNewCategory.setText("");
-							// This code is written to update the list box in the details window as and when the new category is added.
-							// parked for now.
-							int len = qdata.getCategory().length;						
+						dbActions_2.insertIntocategory(qdata);							
+						QueryData qdata1 = dbActions_2.getCategoriesFromDB();
+						if(qdata1.getCategory()!=null)
+						{						
+							listExistingCategory.setItems(qdata1.getCategory());
+							txtAddNewCategory.setText("");			
+							int len = qdata1.getCategory().length;						
 							String [] values = new  String [len];
-							for(String itm: qdata.getCategory()){				
+							for(String itm: qdata1.getCategory())
+							{				
 								int cnt = dbActions_2.accountCount(itm);
 								String val = itm + " - " + Integer.toString(cnt);				
 								values[i] = val;
 								i++;												
 							}
-							
-							 DetailsPage1 page = new DetailsPage1(shlAddNewCategory, 0);
-						     AddNewCategory aCat=new AddNewCategory(shlAddNewCategory, 0);
-						     page.updateListCategory(aCat,values);
-						     
-						}	*/							
+						}
 					}
 					else{
 						MessageBox mBox = new MessageBox(shlAddNewCategory);
@@ -186,30 +173,38 @@ public class AddNewCategory extends Dialog {
 				mBox.open();
 			}
 		});						
-	}
-//Step 6:	
-	/*public void getListcategory(List listCategory )
-	{
-		int i=0;
-		DBActionsImpl dbActions_2 = new DBActionsImpl();
-		QueryData qdata = dbActions_2.getCategoriesFromDB();
-		if(qdata.getCategory()!=null){						
-			//listExistingCategory.setItems(qdata.getCategory());
-			//txtAddNewCategory.setText("");
-			// This code is written to update the list box in the details window as and when the new category is added.
-			// parked for now.
-			int len = qdata.getCategory().length;						
-			String [] values = new  String [len];
-			for(String itm: qdata.getCategory()){				
-				int cnt = dbActions_2.accountCount(itm);
-				String val = itm + " - " + Integer.toString(cnt);				
-				values[i] = val;
-				i++;												
-			}listCategory.setItems(values);
-						 		     
-		}	
- 	
-		//return listCategory;
-    }*/
-//STep 6:	
+	}	
+	
+	
+
+	/*public void setTextAreaClients(List clients,int cnt){
+	    System.out.println("count in cat:" + cnt);
+		this.clients = clients;
+	    if(clients!=null){
+	    	int cnt1 = clients.getItemCount();
+		    System.out.println("CNT: " + cnt1);
+		    System.out.println("Inside set clients..");
+		    int i=0;
+			DBActionsImpl dbActions_2 = new DBActionsImpl();
+			QueryData qdata = dbActions_2.getCategoriesFromDB();
+			if(qdata.getCategory()!=null){						
+				listExistingCategory.setItems(qdata.getCategory());
+				txtAddNewCategory.setText("");			
+				int len = qdata.getCategory().length;						
+				String [] values = new  String [len];
+				for(String itm: qdata.getCategory()){				
+					int cnt = dbActions_2.accountCount(itm);
+					String val = itm + " - " + Integer.toString(cnt);				
+					values[i] = val;
+					i++;												
+				}clients.setItems(values);
+											 		     
+			}	
+		}
+	    
+	}*/
+	
+	
+	
+      
 }

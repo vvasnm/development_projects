@@ -14,8 +14,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import com.password.manager.bean.QueryData;
-import com.password.manager.dao.DataInterface;
-import com.password.manager.dao.impl.CreateTablesImpl;
+//import com.password.manager.dao.impl.CreateTablesImpl;
 import com.password.manager.dao.impl.DBActionsImpl;
 import com.password.manager.util.Constants;
 import com.password.manager.util.Utilities;
@@ -45,22 +44,16 @@ public class DetailsPage1 extends Dialog{
 	private Label lblExistingCategory;
 	private Button btnUpdate;  
     private int i=0,j=0;
-    
-//Step 1:
-  //  private AddNewCategory addCat = null;
-//Step 1:    
+  
+     
     Utilities util_1 = new Utilities();
     
 	public DetailsPage1(Shell parent, int style) {
-		super(parent, style);	
+		super(parent, style);
+		//this.lstCategory = listCategory;
 		
 	}	
-//Step 2:	
-	/*public DetailsPage1(Shell parent, int style, AddNewCategory aCat) {
-		super(parent, style);	
-		this.addCat = aCat;
-	}*/
-//Step 2:
+
 	public Object open() {
 		createContents();
 		shlDetails.open();
@@ -79,11 +72,7 @@ public class DetailsPage1 extends Dialog{
 		}
 		return result;
 	}
-	private void createContents() {
-		
-		
-		
-		
+	private void createContents() {								
 		shlDetails = new Shell(getParent(), SWT.CLOSE | SWT.MIN | SWT.TITLE);
 		shlDetails.setSize(623, 679);
 		shlDetails.setText("password Vault");
@@ -102,7 +91,8 @@ public class DetailsPage1 extends Dialog{
 		lblExistingCategory.setText("Existing Category");	
 		
 		
-		//lstCategory = new List(cmpAccounts, SWT.BORDER);
+		lstCategory = new List(cmpAccounts, SWT.BORDER);
+		
 		GridData gd_lstCategory = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lstCategory.heightHint = 270;
 		gd_lstCategory.widthHint = 296;
@@ -148,6 +138,8 @@ public class DetailsPage1 extends Dialog{
 				}
 			}
 		});			
+	    setListCat(lstCategory);
+	    
 		lblSelectTheCategory = new Label(cmpAccounts, SWT.NONE);
 		lblSelectTheCategory.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD | SWT.ITALIC));
 		GridData gd_lblSelectTheCategory = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -155,8 +147,6 @@ public class DetailsPage1 extends Dialog{
 		gd_lblSelectTheCategory.widthHint = 300;
 		lblSelectTheCategory.setLayoutData(gd_lblSelectTheCategory);
 		lblSelectTheCategory.setText("**Use \"Add Cat\" Button to Add new \r\nCategory**");
-		
-		
 		
 		btnManageCategory = new Button(cmpAccounts, SWT.NONE);
 		GridData gd_btnManageCategory = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -166,8 +156,8 @@ public class DetailsPage1 extends Dialog{
 		btnManageCategory.setText("Manage Cat");
 		btnManageCategory.addSelectionListener(new SelectionAdapter() {			
 			public void widgetSelected(SelectionEvent e) {				
-				Shell shell = new Shell();
-				AddNewCategory category_dialog = new AddNewCategory(shell, SWT.NONE);												
+				//Shell shell = new Shell();				
+				AddNewCategory category_dialog = new AddNewCategory(shlDetails, SWT.NONE);				
 				category_dialog.open();					
 			}
 		});		
@@ -445,28 +435,21 @@ public class DetailsPage1 extends Dialog{
 				Utilities util = new Utilities();
 				util.writeLogFile("\nINFO:Add Account Clicked.");
 				DBActionsImpl dbActions = new DBActionsImpl();
-				CreateTablesImpl createtable = new CreateTablesImpl();		
-				QueryData qdata = new QueryData();
-				qdata = setNewAccountDetails( qdata);				
-				if (isRetypePasswordMatched()){
-					/*if(!util.istableExists(DBConstants.DETAILS_TABLE)){
-						createtable.passwordInformationTable();
-					} */
-					// isDataNotNull this should go up...and isRetypePasswordMatched should come down,because 
-					//if there is a data then only we check for password match here its the other way around,
-				
-					if (isDataNotNull()) 
-						//
-					{
-						if(!isAccountAlreadyExist(qdata.getPmHead())){
-							dbActions.insertPMDetails(qdata);
+					
+				QueryData qdata1 = new QueryData();
+				QueryData qdata2 = setNewAccountDetails( qdata1);				
+				if (isDataNotNull()){									
+					if (isRetypePasswordMatched()) {
+						if(!isAccountAlreadyExist(qdata2.getPmHead())){
+							dbActions.insertPMDetails(qdata2);
 							lstCategory.removeAll();  // Removing to refresh the List after adding the Accounts
-							qdata = dbActions.getCategoriesFromDB();	
+							QueryData qdata3 = dbActions.getCategoriesFromDB();	
 							 // This code is to update the List Category with the number of accounts after any additions
-							if(qdata.getCategory()!=null){														
-								int len = qdata.getCategory().length;
+							if(qdata3.getCategory()!=null){														
+								int len = qdata3.getCategory().length;
+								System.out.println("lenght: " + len);
 								String [] values1 = new  String [len];
-									for(String itm: qdata.getCategory()){				
+									for(String itm: qdata3.getCategory()){				
 										int cnt = dbActions.accountCount(itm);										
 										String val1 = itm + " - " + Integer.toString(cnt);												
 										values1[j] = val1;
@@ -682,10 +665,15 @@ public class DetailsPage1 extends Dialog{
 		}		
 		return isExist;	
 	}
-//Step 3:	
-	/*public void updateListCategory(AddNewCategory addCat){		
-		addCat.getListcategory(lstCategory);
-	}*/
-//Step 3:
+	public List getListCat() {
+		System.out.println("inside get");
+		return lstCategory;
+	}
+	public void setListCat(List listCat) {
+		this.lstCategory = listCat;
+		System.out.println(listCat.getItemCount());
+	}
+	
+	
 }
 

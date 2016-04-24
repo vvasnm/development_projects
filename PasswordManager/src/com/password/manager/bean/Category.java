@@ -37,11 +37,9 @@ public class Category {
 		
 	}
 	public String removeTrailingStrings(){
-		
 		String  categoryValue = _name;					
 		String delims = " [(] ";
 		String[] category = categoryValue.split(delims);
-		
 		return category[0];
 	}
 	

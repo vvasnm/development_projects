@@ -1,3 +1,4 @@
+
 package com.password.manager.ui;
 
 import org.eclipse.swt.widgets.Dialog;
@@ -94,7 +95,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 		gd_lstCategory.heightHint = 270;
 		gd_lstCategory.widthHint = 296;
 		lstCategory.setLayoutData(gd_lstCategory);
-		lstCategory.setItems(CategoryRepository.getInstance().GetAll());
+		lstCategory.setItems(CategoryRepository.getInstance().GetAll());		
 		lstCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -411,7 +412,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 					if (isRetypePasswordMatched()) {
 						if(!isAccountAlreadyExist(qdata2.getPmHead())){
 							dbActions.insertPMDetails(qdata2);
-							lstCategory.removeAll();  // Removing to refresh the List after adding the Accounts
+							//lstCategory.removeAll();  // Removing to refresh the List after adding the Accounts
 							QueryData qdata3 = dbActions.getCategoriesFromDB();	
 							 // This code is to update the List Category with the number of accounts after any additions
 							if(qdata3.getCategory()!=null){														
@@ -625,7 +626,11 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 	}
 	@Override
 	public void categoryAdded(Category cat) {
-		lstCategory.add(cat.toString(), lstCategory.getItemCount());
+		lstCategory.add(cat.toString(), lstCategory.getItemCount());		
+	}
+	@Override
+	public void categoryDeleted(int index) {
+	      lstCategory.remove(index);
 	}		
 }
 

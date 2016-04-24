@@ -125,11 +125,19 @@ public class AddNewCategory extends Dialog {
 		btnDeleteCategory.setText("Click to Delete Category");							
 		btnDeleteCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				MessageBox mBox = new MessageBox(shlAddNewCategory);
-				mBox.setMessage("Under Construction...");
-				mBox.open();
+			public void widgetSelected(SelectionEvent e){
+				if(listExistingCategory.getSelectionCount()>0){
+					CategoryRepository.getInstance().remove(listExistingCategory.getSelection()[0],listExistingCategory.getSelectionIndex());
+					listExistingCategory.remove(listExistingCategory.getSelectionIndex());
+				}
+				else{
+					MessageBox mBox = new MessageBox(shlAddNewCategory);
+					mBox.setMessage("Please select Category to Delete...");
+					mBox.open();
+				}								
 			}
 		});						
-	}	     
+	}
+	
+	
 }

@@ -9,5 +9,6 @@ public interface DBActions {
 	public void updatePMDetails(QueryData qData);
 	public void deletePMDetails(QueryData qData);
 	public void createPMDataTable();
-	public void insertIntocategory(QueryData qData);	
+	public void insertIntocategory(QueryData qData);
+	public void deleteFromCategory(QueryData qData);
 }

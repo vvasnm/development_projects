@@ -176,6 +176,28 @@ public class DBActionsImpl implements DBActions {
 			 util.writeLogFile( e.getClass().getName() + ": " + e.getMessage());			 			 			 			 		
 		     System.exit(0);}	 
 	}
+	@Override
+	public void deleteFromCategory(QueryData qData) {
+		Connection con = null;
+		con  = DBConnection.getDBConnection();
+		try  {  	 
+			 con.setAutoCommit(false);		    	    
+			 Statement stmt = null;
+			 String sqlQuery = null;
+			 stmt = con.createStatement();
+			 String category = qData.getCategoryTobeRemoved();
+			 sqlQuery = "DELETE FROM PCATEGORY WHERE CATEGORY= "+"'"+category+"'" + ";";				
+			 System.out.println(sqlQuery);		    				 
+			 stmt.executeUpdate(sqlQuery);
+			 con.commit();
+			 stmt.close();
+			 util.writeLogFile( "\nValues removed from DB Successfully!!");
+		 } 
+		 catch (SQLException e){			 
+			 util.writeLogFile( e.getClass().getName() + ": " + e.getMessage());			 			 			 			 		
+		     System.exit(0);}	 
+		
+	}
 	public QueryData getExistingAccounts(QueryData qData){		
 		util.writeLogFile( "Inside getExistingAccounts function..");
 		Connection con = null;	
@@ -275,5 +297,6 @@ public class DBActionsImpl implements DBActions {
 	    }
 		return rowCount;
 	}
+	
 	
 }

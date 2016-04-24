@@ -5,6 +5,7 @@ import org.eclipse.swt.widgets.List;
 public class QueryData {	
 		
 	
+	
 	private String pmHead = null;
 	private int pmSno =0;
 	private String pmExistingHead = null;
@@ -23,9 +24,15 @@ public class QueryData {
 	private String selectedAccount = null;
 	private String modifiedPassword = null;
 	private List listCat = null;
+	private String categoryTobeRemoved = null;
 	
 	
-	
+	public String getCategoryTobeRemoved() {
+		return categoryTobeRemoved;
+	}
+	public void setCategoryTobeRemoved(String categoryTobeRemoved) {
+		this.categoryTobeRemoved = categoryTobeRemoved;
+	}
 	public String getPmReNewPassword() {
 		return pmReNewPassword;
 	}

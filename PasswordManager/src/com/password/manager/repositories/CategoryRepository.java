@@ -40,17 +40,25 @@ public class CategoryRepository {
 		 for (IListenCategoryEvents categoryEventListener : categoryEventListeners)
 			 categoryEventListener.categoryAdded(cat);	
     }
-	
+	public void remove(String categoryString,int index){
+		
+		Category cat = new Category(categoryString);
+		String categoryName = cat.removeTrailingStrings();
+		qData.setCategoryTobeRemoved(categoryName);
+		dbActions.deleteFromCategory(qData);
+		for (IListenCategoryEvents categoryEventListener : categoryEventListeners)
+			 categoryEventListener.categoryDeleted(index);	
+	}	
 	public String[] GetAll(){
 		String[] items = new String[categories.size()];
 		int index=0;
 		for(Category cat: categories)
 		{
-		  items[index++] = cat.toString();		  
+		  items[index++] = cat.toString();
+
 		}
 		return items;
 	}
-	
 	public void addListener(IListenCategoryEvents listener)
 	{
 		categoryEventListeners.add(listener);	

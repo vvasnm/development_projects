@@ -59,8 +59,7 @@ public class CreateTablesImpl implements CreateTables {
 	    }finally {
 	    	try { con.close(); }
 	    	catch( SQLException e ) { e.printStackTrace(); }
-	    }		
-		
+	    }				
 	}			
 	@Override
 	public void passwordInformationTable() {
@@ -85,8 +84,7 @@ public class CreateTablesImpl implements CreateTables {
 	    }finally {
 	    	try { con.close(); }
 	    	catch( SQLException e ) { e.printStackTrace(); }
-	    }		
-		
+	    }				
 	}
 	@Override
 	public void CreateAllTables() {
@@ -94,5 +92,4 @@ public class CreateTablesImpl implements CreateTables {
 		createCategoryTable();
 		passwordInformationTable();		
 	}
-
 }

@@ -3,12 +3,12 @@ package com.password.manager.dao;
 import com.password.manager.bean.QueryData;
 
 public interface DBActions {
-	
-	public QueryData selectPMDetails(QueryData qData);
-	public void insertPMDetails(QueryData qData);
-	public void updatePMDetails(QueryData qData);
-	public void deletePMDetails(QueryData qData);
-	public void createPMDataTable();
+	//Account Related Methods
+	public void createNewAccount(QueryData qData);
+	public QueryData getAccountData(QueryData qData);
+	public void updateAccount(QueryData qData);
+	public void deleteAccount(QueryData qData);
+	//Category Related methods
 	public void insertIntocategory(QueryData qData);
 	public void deleteFromCategory(QueryData qData);
 }

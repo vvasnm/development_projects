@@ -171,7 +171,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 				if((listAccounts.getSelectionCount()>0)  ){
 					String [] account = listAccounts.getSelection();					
 					qData.setWhereClauseField(account[0]);
-					QueryData dbvalues = dbActions_1.selectPMDetails(qData);
+					QueryData dbvalues = dbActions_1.getAccountData(qData);
 					txtAcc.setText(dbvalues.getAccountDB());
 					txtUname.setText(dbvalues.getUserNameDB());
 					txtPass.setText(dbvalues.getPassWordDB());
@@ -210,7 +210,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 					int selectionIndex = listAccounts.getSelectionIndex();
 					selectedAccount = listAccounts.getSelection();
 					qData.setSelectedAccount(selectedAccount[0]);
-					dbActions.deletePMDetails(qData);
+					dbActions.deleteAccount(qData);
 					clearWidgets();
 					listAccounts.remove(selectionIndex);
 					// This code is to update the List Category with the number of accounts after any additions
@@ -411,7 +411,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 				if (isDataNotNull()){									
 					if (isRetypePasswordMatched()) {
 						if(!isAccountAlreadyExist(qdata2.getPmHead())){
-							dbActions.insertPMDetails(qdata2);
+							dbActions.createNewAccount(qdata2);
 							//lstCategory.removeAll();  // Removing to refresh the List after adding the Accounts
 							QueryData qdata3 = dbActions.getCategoriesFromDB();	
 							 // This code is to update the List Category with the number of accounts after any additions
@@ -555,7 +555,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 						String [] selectedAccount = listAccounts.getSelection();
 						qData_1.setModifiedPassword(txtPass.getText());
 						qData_1.setSelectedAccount(selectedAccount[0]);
-						dbActions_2.updatePMDetails(qData_1);
+						dbActions_2.updateAccount(qData_1);
 						clearWidgets();
 					}					
 				}
@@ -580,12 +580,12 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 		txtPass.setText("");	
 	}
 	private QueryData setNewAccountDetails(QueryData qData){
-		qData.setPmHead(txtAccountName.getText());
-		qData.setSelectedCategory(cmbCategory.getText());
-		qData.setPmUsername(txtUsername.getText());
-		qData.setPmPassword(txtPassword.getText());
-		qData.setPmReNewPassword(txtRetypePassword.getText());
-		util_1.writeLogFile("\nINFO:Finished reading the details from UI.");
+		qData.setPmHead(txtAccountName.getText().toUpperCase());
+		qData.setSelectedCategory(cmbCategory.getText().toUpperCase());
+		qData.setPmUsername(txtUsername.getText().toUpperCase());
+		qData.setPmPassword(txtPassword.getText().toUpperCase());
+		qData.setPmReNewPassword(txtRetypePassword.getText().toUpperCase());
+		
 		return qData;		
 	}
 	private boolean isDataNotNull(){

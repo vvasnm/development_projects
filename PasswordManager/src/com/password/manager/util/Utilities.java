@@ -24,7 +24,7 @@ public class Utilities {
    // static Logger log = Logger.getLogger(Utilities.class.getName());	
 	public void createUserProfile(PMData pmdata,Shell shl){
 		int rowCnt = 0;						
-		createUserTable();				
+	//	createUserTable();				
 		rowCnt = rowCount(Constants.DB_USER_TABLE);		
 		if (rowCnt == 0){
 			// in this way we are restricting the application is only for single user.
@@ -55,36 +55,7 @@ public class Utilities {
 			e.printStackTrace();
 		}			    
 	}
-// Create User Table creates the table of not exist.
-	public void createUserTable() {
-		/*Connection con = null; 
-		try {
-			 con = DBConnection.getDBConnection();
-			 con.setAutoCommit(false);
-			 Statement stmt = null;
-			 String sqlQuery = null;
-			 stmt = con.createStatement();	
-			 writeLogFile( "\nI am inside the createUserTable...function");
-			 sqlQuery = " CREATE TABLE IF NOT EXISTS PUSERPROFILE " +
-	                    "(ID  INT PRIMARY KEY     NOT NULL, " +
-					    " NAME           TEXT     NOT NULL, " + 
-	                    " USERNAME       TEXT     NOT NULL, " + 	                   
-	                    " PASSWORD       CHAR(50))         " ; 			 
-			 stmt.executeUpdate(sqlQuery);
-			 con.commit();
-			 stmt.close();			 
-		 } 		
-		catch( SQLException e ) {
-	    	if( con != null ) {
-	    		try { con.rollback(); }        // rollback on error 
-	    		catch( SQLException ee ) { }
-	    	}
-	    	e.printStackTrace();
-	    }finally {
-	    	try { con.close(); }
-	    	catch( SQLException e ) { e.printStackTrace(); }
-	    }*/
-	}			
+		
 	public  int rowCount(String tableName){		
 		int rowCount = 0;Connection con = null; 								
 		try {

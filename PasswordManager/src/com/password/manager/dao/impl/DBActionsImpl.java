@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
-
 import com.password.manager.bean.QueryData;
 import com.password.manager.dao.DBActions;
 import com.password.manager.dao.DBConnection;
@@ -15,53 +13,21 @@ import com.password.manager.util.Utilities;
 
 public class DBActionsImpl implements DBActions {
 
-	Utilities util = new Utilities();
-	static Logger log = Logger.getLogger(DBActionsImpl.class.getName());
+	Utilities util = new Utilities();	
 	@Override
-	public void createPMDataTable() {
-		Connection con = null; 
-		try {
-			 con = DBConnection.getDBConnection();
-			 con.setAutoCommit(false);
-			 Statement stmt = null;
-			 String sqlQuery = null;
-			 stmt = con.createStatement();	
-			 util.writeLogFile( "\nIn createPMDataTable...function");		
-			 sqlQuery = "CREATE TABLE  PDETAILS (HEAD TEXT   PRIMARY KEY  NOT NULL,LABEL TEXT NOT NULL,USERNAME  TEXT NOT NULL,PASSWORD  CHAR(50));";	                    			 
-			 stmt.executeUpdate(sqlQuery);
-			 con.commit();
-			 stmt.close();
-			 util.writeLogFile( "\nTable Created Successfully!!");
-		 } 		
-		catch( SQLException e ) {
-	    	if( con != null ) {
-	    		try { con.rollback(); }        // rollback on error 
-	    		catch( SQLException ee ) { }
-	    	}
-	    	e.printStackTrace();
-	    }finally {
-	    	try { con.close(); }
-	    	catch( SQLException e ) { e.printStackTrace(); }
-	    }		
-	}			
-	@Override
-	public void insertPMDetails(QueryData qData) {
+	public void createNewAccount(QueryData qData) {
 		util.writeLogFile( "\nI am inside the insertPMDetails...function");		
 		try  {  
 			 Connection con = DBConnection.getDBConnection(); 
-			 con.setAutoCommit(false);
-		    // int rowCnt = 0;
+			 con.setAutoCommit(false);		    
 			 String OpenBracket   = "(";  
 		     String ClosedBracket = ")"; 
 		     String SemoColon     = ";";
-		     String Quote         = "'";		     
-		    // rowCnt = util.rowCount(Constants.DB_PM_TABLE)+1;
-		    
+		     String Quote         = "'";		     		    	    
 		     String valueString1  = OpenBracket.concat(Quote).concat(qData.getPmHead()).concat(Quote).concat(",").concat(Quote).concat(qData.getSelectedCategory()).concat(Quote).concat(",").concat(Quote).concat(qData.getPmUsername()).concat(Quote).concat(",").concat(Quote).concat(qData.getPmPassword()).concat(Quote).concat(ClosedBracket).concat(SemoColon);		    
 			 Statement stmt = null;
 			 String sqlQuery = null;
-			 stmt = con.createStatement();
-			 
+			 stmt = con.createStatement();			 
 			 sqlQuery = "INSERT INTO PPASSWORDDETAILS (ACCOUNT,CATEGORY,USERNAME,PASSWORD)"
 			 		    + " VALUES"  
 					    +  valueString1 ;				 
@@ -76,7 +42,7 @@ public class DBActionsImpl implements DBActions {
 		 }			
 	}			
 	@Override
-	public void updatePMDetails(QueryData qData) {
+	public void updateAccount(QueryData qData) {
 		// update ppassworddetails set password = "svad2" where ACCOUNT="DBS" AND CATEGORY = "BANKS";
 		Connection con = null;
 		util.writeLogFile( "Inside deletePMDetails function...");			   
@@ -101,7 +67,7 @@ public class DBActionsImpl implements DBActions {
 	  }	      				
 	}
 	@Override
-	public void deletePMDetails(QueryData qData) {
+	public void deleteAccount(QueryData qData) {
 		Connection con = null;
 		util.writeLogFile( "Inside deletePMDetails function...");		
 	    String existingHead = null;
@@ -124,7 +90,7 @@ public class DBActionsImpl implements DBActions {
 	  }	      										
 	}    
 	@Override
-	public QueryData selectPMDetails(QueryData qData) {
+	public QueryData getAccountData(QueryData qData) {
 		Connection con = null;
 		//util.writeLogFile( "Inside selectPMDetails function...");
 	    String whereClause = null;  
@@ -165,8 +131,7 @@ public class DBActionsImpl implements DBActions {
 			 String sqlQuery = null;
 			 stmt = con.createStatement();
 			 String category = qData.getSelectedCategory();
-			 sqlQuery = "INSERT INTO PCATEGORY (CATEGORY) VALUES ('" + category + "'" + ")" + ";";
-			 System.out.println(sqlQuery);		    				 
+			 sqlQuery = "INSERT INTO PCATEGORY (CATEGORY) VALUES ('" + category + "'" + ")" + ";";			    				 
 			 stmt.executeUpdate(sqlQuery);
 			 con.commit();
 			 stmt.close();
@@ -186,8 +151,7 @@ public class DBActionsImpl implements DBActions {
 			 String sqlQuery = null;
 			 stmt = con.createStatement();
 			 String category = qData.getCategoryTobeRemoved();
-			 sqlQuery = "DELETE FROM PCATEGORY WHERE CATEGORY= "+"'"+category+"'" + ";";				
-			 System.out.println(sqlQuery);		    				 
+			 sqlQuery = "DELETE FROM PCATEGORY WHERE CATEGORY= "+"'"+category+"'" + ";";							    				 
 			 stmt.executeUpdate(sqlQuery);
 			 con.commit();
 			 stmt.close();
@@ -195,8 +159,7 @@ public class DBActionsImpl implements DBActions {
 		 } 
 		 catch (SQLException e){			 
 			 util.writeLogFile( e.getClass().getName() + ": " + e.getMessage());			 			 			 			 		
-		     System.exit(0);}	 
-		
+		     System.exit(0);}	 		
 	}
 	public QueryData getExistingAccounts(QueryData qData){		
 		util.writeLogFile( "Inside getExistingAccounts function..");
@@ -204,8 +167,7 @@ public class DBActionsImpl implements DBActions {
 		ResultSet rs = null;		
 		int inx = 0;		
 		String [] account = new String [200];		
-		con  = DBConnection.getDBConnection();		
-		//QueryData qData = new QueryData();
+		con  = DBConnection.getDBConnection();				
 		try {											
 			con.setAutoCommit(false);
 			Statement stmt = con.createStatement();	
@@ -228,9 +190,7 @@ public class DBActionsImpl implements DBActions {
 	  }	      				
 		return qData;
 	}
-	
-	private String [] removeNullValue (String [] values){
-	   
+	private String [] removeNullValue (String [] values){	   
 		List<String> list = new ArrayList<String>();
 		for(String s : values) {
 		       if(s != null && s.length() > 0) {
@@ -238,11 +198,8 @@ public class DBActionsImpl implements DBActions {
 		       }
 		    }   
 		values = list.toArray(new String[list.size()]);
-
 	    return values;
-	}
-	
-	
+	}		
 	public QueryData getCategoriesFromDB() {
 		Connection con = null;	
 		ResultSet rs = null;
@@ -296,7 +253,5 @@ public class DBActionsImpl implements DBActions {
 	    	catch( SQLException e ) { e.printStackTrace(); }
 	    }
 		return rowCount;
-	}
-	
-	
+	}		
 }

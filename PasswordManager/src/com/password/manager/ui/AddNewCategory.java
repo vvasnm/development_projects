@@ -21,13 +21,13 @@ import org.eclipse.swt.widgets.Monitor;
 
 public class AddNewCategory extends Dialog {
 
-	protected Object result;
-	protected Shell shlAddNewCategory;
-	private Text txtAddNewCategory;
-	private Button btnSaveCategory,btnDeleteCategory;
-	private Label lblNewLabel,lblNewCategory,lblCheckTheExisting;
-	private Composite cmpButtons,cmpInstructions,cmpCategory;
-	private List listExistingCategory;// this has to be propagated up
+	protected Object    result;
+	protected Shell     shlAddNewCategory;
+	private   Text      txtAddNewCategory;
+	private   Button    btnSaveCategory,btnDeleteCategory;
+	private   Label     lblNewLabel,lblNewCategory,lblCheckTheExisting;
+	private   Composite cmpButtons,cmpInstructions,cmpCategory;
+	private   List      listExistingCategory;// this has to be propagated up
 	  
 	public AddNewCategory(Shell parent, int style) {
 		super(parent, style);		
@@ -89,7 +89,7 @@ public class AddNewCategory extends Dialog {
 		gd_lblCheckTheExisting.heightHint = 39;
 		gd_lblCheckTheExisting.widthHint = 427;
 		lblCheckTheExisting.setLayoutData(gd_lblCheckTheExisting);
-		lblCheckTheExisting.setText("1) Check the Existing Category from List above before creating it.\r\n2) Check is to avoid duplicates.\r\n\r\n");
+		lblCheckTheExisting.setText(Constants.CATEGORY_INSTRUCTIONS);
 		
 		cmpButtons = new Composite(shlAddNewCategory, SWT.NONE);
 		cmpButtons.setLayout(new GridLayout(10, false));
@@ -102,7 +102,7 @@ public class AddNewCategory extends Dialog {
 		GridData gd_btnSaveCategory = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnSaveCategory.widthHint = 210;
 		btnSaveCategory.setLayoutData(gd_btnSaveCategory);
-		btnSaveCategory.setText("Click to Save Category");
+		btnSaveCategory.setText(Constants.SAVE_CATEGORY_TOOLTIP);
 		btnSaveCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {			
@@ -122,22 +122,27 @@ public class AddNewCategory extends Dialog {
 		GridData gd_btnDeleteCategory = new GridData(SWT.RIGHT, SWT.RIGHT, false, false, 1, 1);
 		gd_btnDeleteCategory.widthHint = 215;
 		btnDeleteCategory.setLayoutData(gd_btnDeleteCategory);
-		btnDeleteCategory.setText("Click to Delete Category");							
+		btnDeleteCategory.setText(Constants.DELETE_CATEGORY_TIP);							
 		btnDeleteCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e){
-				if(listExistingCategory.getSelectionCount()>0){					
-					CategoryRepository.getInstance().removeCategories(listExistingCategory.getSelection()[0],listExistingCategory.getSelectionIndex());
-					listExistingCategory.remove(listExistingCategory.getSelectionIndex());
+				if(listExistingCategory.getSelectionCount()>0){
+					if(!CategoryRepository.getInstance().isAccountExistforCategory(listExistingCategory.getSelection()[0])){
+						CategoryRepository.getInstance().removeCategories(listExistingCategory.getSelection()[0],listExistingCategory.getSelectionIndex());
+						listExistingCategory.remove(listExistingCategory.getSelectionIndex());
+					}
+					else{
+						MessageBox mBox = new MessageBox(shlAddNewCategory);
+						mBox.setMessage(Constants.CATEGORY_HAS_ACCOUNTS);
+						mBox.open();
+					}
 				}
 				else{
 					MessageBox mBox = new MessageBox(shlAddNewCategory);
-					mBox.setMessage("Please select Category to Delete...");
+					mBox.setMessage(Constants.SELECT_CATEGORY);
 					mBox.open();
 				}								
 			}
 		});						
 	}
-	
-	
 }

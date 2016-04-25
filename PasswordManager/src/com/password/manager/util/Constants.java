@@ -26,5 +26,10 @@ public class Constants {
 	public static final String NULL_WHERE_CLAUSE = "Please select the 'LABEL' Or 'Account' to Fetch the  Records.";
 	public static final String NO_HEAD_SELECTED = "Account can't be empty, Please selecte Account and Delete the records from DB";
 	public static final String CATEGORY_EXIST = "Category already exist,please enter a different category.";
+	public static final String CATEGORY_HAS_ACCOUNTS = "There are accounts available under the category,please remove the accounts and try removing the category.";
+	public static final String SELECT_CATEGORY = "Please select category and execute the Operation.";
+	public static final String CATEGORY_INSTRUCTIONS = "1) Check the Existing Category from List above before creating it.\r\n2) Check is to avoid duplicates.\r\n\r\n";
+	public static final String SAVE_CATEGORY_TOOLTIP = "Click to Save Category";
+	public static final String DELETE_CATEGORY_TIP = "Click to Delete Category";
 	
 }

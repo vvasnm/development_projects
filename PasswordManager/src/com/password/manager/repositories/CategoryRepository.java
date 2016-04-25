@@ -56,8 +56,10 @@ public class CategoryRepository {
 	public void addListener(IListenCategoryEvents listener){
 		categoryEventListeners.add(listener);	
 	}
-	public boolean isAccountExistforCategory(String categoryName){
+	public boolean isAccountExistforCategory(String categoryString){
 		boolean isExist = false;
+		Category cat = new Category(categoryString);
+		String categoryName = cat.removeTrailingStrings();
 		int cnt = dbActions.accountCount(categoryName);
 		if(cnt>0){
 			isExist = true;

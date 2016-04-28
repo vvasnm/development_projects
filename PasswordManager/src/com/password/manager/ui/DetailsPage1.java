@@ -14,10 +14,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
+import com.password.manager.bean.Account;
 import com.password.manager.bean.Category;
 import com.password.manager.bean.QueryData;
 import com.password.manager.dao.impl.DBActionsImpl;
-import com.password.manager.listeners.IListenCategoryEvents;
+import com.password.manager.listeners.IListenEvents;
 import com.password.manager.repositories.CategoryRepository;
 import com.password.manager.util.Constants;
 import com.password.manager.util.Utilities;
@@ -31,7 +33,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.List;
 
 
-public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
+public class DetailsPage1 extends Dialog implements IListenEvents{
     	
 	protected Object result;
 	protected Shell shlDetails;
@@ -99,29 +101,8 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 		lstCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				QueryData qData = new QueryData();
-				DBActionsImpl dbActions_1 = new DBActionsImpl();				
-				if(lstCategory.getSelectionCount()>0){
-					listAccounts.setEnabled(true);
-					String [] val_category = lstCategory.getSelection();					
-					String delims = " [-] ";
-					String[] category = val_category[0].split(delims);
-					qData.setSelectedCategory(category[0]);
-					int cnt = dbActions_1.accountCount(category[0]);
-					if(cnt>0){
-						QueryData querydata = dbActions_1.getExistingAccounts(qData);
-						String [] Accounts = querydata.getAccount();
-						listAccounts.setItems(Accounts);	
-					}
-					else{
-						listAccounts.removeAll();
-					}
-				}
-				else{
-					MessageBox mBox = new MessageBox(shlDetails);
-					mBox.setMessage(Constants.VIEW_INFO_ERROR);
-					mBox.open();
-				}
+			
+				
 			}
 		});			  
 		lblSelectTheCategory = new Label(cmpAccounts, SWT.NONE);
@@ -163,7 +144,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 		listAccounts.setLayoutData(gd_listAccounts);
 		listAccounts.setEnabled(false);
 		listAccounts.setToolTipText("Display Account Information ");
-		listAccounts.addSelectionListener(new SelectionAdapter() {
+		/*listAccounts.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				QueryData qData = new QueryData();
@@ -184,7 +165,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 					mBox.open();
 				}
 			}
-		});			
+		});	*/		
 		Label lblSelectTheAccounts = new Label(comAccounts1, SWT.NONE);
 		GridData gd_lblSelectTheAccounts = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblSelectTheAccounts.widthHint = 270;
@@ -198,7 +179,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 		btnDeleteAccInfo.setLayoutData(gd_btnDeleteAccInfo);
 		btnDeleteAccInfo.setText("Delete");
 		btnDeleteAccInfo.setEnabled(false);
-		btnDeleteAccInfo.addSelectionListener(new SelectionAdapter() {
+		/*btnDeleteAccInfo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Chkpt1...");
@@ -232,7 +213,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 					mBox.open();
 				}
 			}
-		});
+		});*/
 		cmpAddAccounts = new Composite(shlDetails, SWT.NONE);
 		cmpAddAccounts.setLayout(new GridLayout(2, false));
 		GridData gd_cmpAddAccounts = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -366,8 +347,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 			}
 		});		
 		Label lblCategory = new Label(cmpAddAccounts, SWT.NONE);
-		lblCategory.setText("Category :");
-		
+		lblCategory.setText("Category :");		
 		cmbCategory = new Combo(cmpAddAccounts, SWT.READ_ONLY);
 		cmbCategory.setToolTipText("Select  category");
 		GridData gd_cmbCategory = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
@@ -375,9 +355,14 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 		cmbCategory.setLayoutData(gd_cmbCategory);
 		cmbCategory.setText("\"\"");
 		cmbCategory.setEnabled(false);
-		cmbCategory.addSelectionListener(new SelectionListener() {			
+		/*cmbCategory.addSelectionListener(new SelectionListener() {			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				DBActionsImpl dbActions_1 = new DBActionsImpl();
+				QueryData qdata = dbActions_1.getCategoriesFromDB();
+				if(qdata.getCategory()!=null){
+					cmbCategory.setItems(qdata.getCategory());
+				}	
 				if((cmbCategory.getText()!=null) && (cmbCategory.getText()!="")){
 					btnAddAccount.setEnabled(true);											
 				}				
@@ -385,12 +370,8 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {				
 			}
-		});																			
-		DBActionsImpl dbActions_1 = new DBActionsImpl();
-		QueryData qdata = dbActions_1.getCategoriesFromDB();
-		if(qdata.getCategory()!=null){
-			cmbCategory.setItems(qdata.getCategory());
-		}		
+		});	*/																		
+			
 		btnAddAccount = new Button(cmpAddAccounts, SWT.NONE);
 		btnAddAccount.setToolTipText("Click to Add Account to DB");
 		GridData gd_btnAddAccount = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -400,7 +381,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 		btnAddAccount.setText("Add Acc");
 		btnAddAccount.setEnabled(false);
 		new Label(cmpAddAccounts, SWT.NONE);
-		btnAddAccount.addSelectionListener(new SelectionAdapter() {
+		/*btnAddAccount.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Utilities util = new Utilities();
@@ -448,7 +429,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 				}
 				clearWidgets();	
 			}
-		});
+		});*/
 		Composite cmpView = new Composite(shlDetails, SWT.NONE);
 		cmpView.setLayout(new GridLayout(2, false));
 		GridData gd_cmpView = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
@@ -544,7 +525,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 		
 		btnUpdate = new Button(cmpView, SWT.NONE);
 		btnUpdate.setEnabled(false);
-		btnUpdate.addSelectionListener(new SelectionAdapter() {
+		/*btnUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				DBActionsImpl dbActions_2 = new DBActionsImpl();
@@ -565,7 +546,7 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 					mBox.open();
 				}				
 			}
-		});
+		});*/
 		btnUpdate.setText("Update");
 		new Label(cmpView, SWT.NONE);
 	}	
@@ -579,14 +560,14 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 		txtUname.setText("");
 		txtPass.setText("");	
 	}
-	private QueryData setNewAccountDetails(QueryData qData){
-		qData.setPmHead(txtAccountName.getText().toUpperCase());
-		qData.setSelectedCategory(cmbCategory.getText().toUpperCase());
-		qData.setPmUsername(txtUsername.getText().toUpperCase());
-		qData.setPmPassword(txtPassword.getText().toUpperCase());
-		qData.setPmReNewPassword(txtRetypePassword.getText().toUpperCase());
+	private Account setNewAccountDetails(Account acc){
+		acc.setNewAccountName(txtAccountName.getText().toUpperCase());
+		acc.setNewAccountCategory(cmbCategory.getText().toUpperCase());
+		acc.setNewAccountUsername(txtUsername.getText().toUpperCase());
+		acc.setNewAccountPassword(txtPassword.getText().toUpperCase());
+		//acc.setPmReNewPassword(txtRetypePassword.getText().toUpperCase());
 		
-		return qData;		
+		return acc;		
 	}
 	private boolean isDataNotNull(){
 		boolean isNotNull = false;		
@@ -602,35 +583,33 @@ public class DetailsPage1 extends Dialog implements IListenCategoryEvents{
 	private boolean isRetypePasswordMatched(){
 		boolean isPasswordMatched = false;		
 		if (txtPassword.getText().equals(txtRetypePassword.getText())){
-			isPasswordMatched = true;
-			util_1.writeLogFile("\nINFO:Password matched.");
+			isPasswordMatched = true;			
 		}		
 		return isPasswordMatched;
 	}	
-	boolean isAccountAlreadyExist(String account){
-		boolean isExist = false;
-		QueryData qdata = new QueryData();
-		DBActionsImpl dbActions = new DBActionsImpl();
-		qdata.setSelectedCategory(cmbCategory.getText());
-		qdata = dbActions.getExistingAccounts(qdata);
-		String [] accounts = qdata.getAccount();
-		if(accounts!=null){
-			for(String acc : accounts ){
-				if(acc.equals(account)){
-					isExist = true;
-					break;
-				}
-			}	
-		}		
-		return isExist;	
-	}
+	
 	@Override
 	public void categoryAdded(Category cat) {
 		lstCategory.add(cat.toString(), lstCategory.getItemCount());		
 	}
 	@Override
-	public void categoryDeleted(int index) {
-	      lstCategory.remove(index);
+	public void categoryDeleted(Category cat) {
+	      lstCategory.remove(cat.getName());
+	}
+	@Override
+	public void accountAdded(Account account) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void deleteAccount(Account account) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void viewAccountDetails(Account account) {
+		// TODO Auto-generated method stub
+		
 	}		
 }
 

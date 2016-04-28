@@ -2,7 +2,8 @@ package com.password.manager.bean;
 
 public class Category {
 	
-	private int _totalAccounts;
+	
+	private int totalAccounts;
 	private String _name;
 	
 	public Category(String name)
@@ -12,14 +13,15 @@ public class Category {
 	
 	public void setAccountCount(int totalAccounts)
 	{
-		 _totalAccounts = totalAccounts;
+		 this.totalAccounts = totalAccounts;
 	}
 	
 	public int getAccountCount()
 	{
-		 return _totalAccounts;
+		 return totalAccounts;
 	}
 	
+
 	public void setName(String name)
 	{
 		_name = name;
@@ -33,9 +35,11 @@ public class Category {
 	@Override
 	public String toString()
 	{
-		return _name.toUpperCase() + " ( " + _totalAccounts +" )" ;
+		System.out.println("_totalAccounts.." + getAccountCount());
+		return _name.toUpperCase() + " ( " + getAccountCount() +" )" ;
 		
 	}
+
 	public String removeTrailingStrings(){
 		String  categoryValue = _name;					
 		String delims = " [(] ";

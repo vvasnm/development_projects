@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.password.manager.bean.Account;
 import com.password.manager.bean.QueryData;
 import com.password.manager.dao.DBActions;
 import com.password.manager.dao.DBConnection;
@@ -15,7 +17,7 @@ public class DBActionsImpl implements DBActions {
 
 	Utilities util = new Utilities();	
 	@Override
-	public void createNewAccount(QueryData qData) {
+	public void createNewAccount(Account acc) {
 		util.writeLogFile( "\nI am inside the insertPMDetails...function");		
 		try  {  
 			 Connection con = DBConnection.getDBConnection(); 
@@ -24,7 +26,7 @@ public class DBActionsImpl implements DBActions {
 		     String ClosedBracket = ")"; 
 		     String SemoColon     = ";";
 		     String Quote         = "'";		     		    	    
-		     String valueString1  = OpenBracket.concat(Quote).concat(qData.getPmHead()).concat(Quote).concat(",").concat(Quote).concat(qData.getSelectedCategory()).concat(Quote).concat(",").concat(Quote).concat(qData.getPmUsername()).concat(Quote).concat(",").concat(Quote).concat(qData.getPmPassword()).concat(Quote).concat(ClosedBracket).concat(SemoColon);		    
+		     String valueString1  = OpenBracket.concat(Quote).concat(acc.getNewAccountName()).concat(Quote).concat(",").concat(Quote).concat(acc.getNewAccountCategory()).concat(Quote).concat(",").concat(Quote).concat(acc.getNewAccountUsername()).concat(Quote).concat(",").concat(Quote).concat(acc.getNewAccountPassword()).concat(Quote).concat(ClosedBracket).concat(SemoColon);		    
 			 Statement stmt = null;
 			 String sqlQuery = null;
 			 stmt = con.createStatement();			 
@@ -161,24 +163,24 @@ public class DBActionsImpl implements DBActions {
 			 util.writeLogFile( e.getClass().getName() + ": " + e.getMessage());			 			 			 			 		
 		     System.exit(0);}	 		
 	}
-	public QueryData getExistingAccounts(QueryData qData){		
-		util.writeLogFile( "Inside getExistingAccounts function..");
+	public QueryData getExistingAccounts(String categoryName){				
 		Connection con = null;	
 		ResultSet rs = null;		
-		int inx = 0;		
+		int inx = 0;
+		QueryData qData = new QueryData();		
 		String [] account = new String [200];		
 		con  = DBConnection.getDBConnection();				
 		try {											
 			con.setAutoCommit(false);
 			Statement stmt = con.createStatement();	
-			String whereClause =qData.getSelectedCategory();
+			String whereClause =categoryName;
 			String sqlQuery =  "SELECT ACCOUNT FROM PPASSWORDDETAILS WHERE CATEGORY = " + "'" + whereClause + "'" +  ";";
 			rs = stmt.executeQuery(sqlQuery);				
 			while ( rs.next() ){										
 				account[inx] = rs.getString("ACCOUNT"); 													
 				inx++;									
-				String [] headNotNull = removeNullValue(account);				
-				qData.setAccount(headNotNull);								
+				String [] accountsNotNull = removeNullValue(account);
+				qData.setAccount(accountsNotNull);										
 		    }					        												 								
 			rs.close();
 		    stmt.close();						

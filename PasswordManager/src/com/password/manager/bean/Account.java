@@ -6,10 +6,19 @@ public class Account {
 	private String newAccountUsername = null;
 	private String newAccountPassword = null;
 	private String newAccountCategory = null;
+	private String [] account = null;
 	
 	public Account(String accountName){
 		newAccountName = accountName;
 	}
+		
+	public String[] getAccount() {
+		return account;
+	}
+	public void setAccount(String[] account) {
+		this.account = account;
+	}
+	
 	public String getNewAccountName() {
 		return newAccountName;
 	}

@@ -71,12 +71,12 @@ public class CategoryRepository {
 	}*/
 	
 	public String[] GetAll(){
-	String[] items = new String[hashCategories.size()];
+	String[] items = new String[hashCategories.size()];	
     Iterator<String> keySetIterator = hashCategories.keySet().iterator();
 	int index=0;	
 	while(keySetIterator.hasNext()){
 		String key = keySetIterator.next();
-		Category cat = new Category(key);
+		Category cat = (Category)hashCategories.get(key);		
 		items[index++] = cat.toString();	
 		
 	  }

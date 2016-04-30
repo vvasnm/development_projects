@@ -582,7 +582,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 	@Override
 	public void categoryDeleted(String formattedCategoryName) {
 	      lstCategory.remove(formattedCategoryName);
-	      cmbCategory.remove(formattedCategoryName);
+	      //cmbCategory.remove(formattedCategoryName);
 	}
 	@Override
 	public void accountAdded(Account account) {

@@ -126,9 +126,9 @@ public class AddNewCategory extends Dialog {
 		btnDeleteCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e){				
-				if(listExistingCategory.getSelectionCount()>0){
-					System.out.println("selection String: " + listExistingCategory.getSelection()[0].toString());
+				if(listExistingCategory.getSelectionCount()>0){					
 					String formattedCategoryName =  listExistingCategory.getSelection()[0];
+					System.out.println("selection String: " + formattedCategoryName);
 					if(!CategoryRepository.getInstance().hasAnyAccounts(formattedCategoryName)){
 						CategoryRepository.getInstance().removeCategories(formattedCategoryName);
 						listExistingCategory.remove(listExistingCategory.getSelectionIndex());

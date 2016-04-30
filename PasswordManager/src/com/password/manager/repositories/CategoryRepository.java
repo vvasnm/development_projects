@@ -9,8 +9,7 @@ import com.password.manager.dao.impl.DBActionsImpl;
 import com.password.manager.listeners.IListenEvents;
 
 public class CategoryRepository {
-	
-	//private ArrayList<Category> categories = new ArrayList<Category>();	
+
 	private QueryData qData = new QueryData(); 
 	private DBActionsImpl dbActions = new DBActionsImpl();
 	private static CategoryRepository _categoryRepository = new CategoryRepository();
@@ -27,9 +26,8 @@ public class CategoryRepository {
 				Category cat =	new Category(itm);
 				int cnt = dbActions.accountCount(itm);				
 				cat.setAccountCount(cnt);
-				System.out.println("Count..."+ cat.getAccountCount());
-				hashCategories.put(itm, cat);
-				//categories.add(cat);
+				System.out.println("Count..."+ cat.getAccountCount());				
+				hashCategories.put(itm, cat);			
 			}
 		}		
 	}
@@ -42,58 +40,58 @@ public class CategoryRepository {
 		 for (IListenEvents categoryEventListener : categoryEventListeners)
 			 categoryEventListener.categoryAdded(cat);	
     }
-    public void removeCategories(String categoryName){
-		
-		Category cat = new Category(categoryName);
-		String cat_1 = cat.removeTrailingStrings();
-		qData.setCategoryTobeRemoved(cat_1);
+    public void removeCategories(String formattedCategoryName){
+    	Category matchingCat = getCategoryByFormattedName(formattedCategoryName);
+    	if (matchingCat == null)
+    	{
+    		return;
+    	}
+    	String catName = matchingCat.getName();
+		qData.setCategoryTobeRemoved(catName);
 		dbActions.deleteFromCategory(qData);		
-		hashCategories.remove(categoryName);
+		hashCategories.remove(catName);
 		for (IListenEvents categoryEventListener : categoryEventListeners)
-			 categoryEventListener.categoryDeleted(cat);	
+			 categoryEventListener.categoryDeleted(formattedCategoryName);	
 	}	
-	/*public void removeCategories(String categoryString,int index){
-		
-		Category cat = new Category(categoryString);
-		String categoryName = cat.removeTrailingStrings();
-		qData.setCategoryTobeRemoved(categoryName);
-		dbActions.deleteFromCategory(qData);
-		for (IListenEvents categoryEventListener : categoryEventListeners)
-			 categoryEventListener.categoryDeleted(index);	
-	}	*/
-	/*public String[] GetAll(){
-		String[] items = new String[categories.size()];
-		int index=0;
-		for(Category cat: categories){
-		  items[index++] = cat.toString();
-		}
-		return items;
-	}*/
+	
 	
 	public String[] GetAll(){
-	String[] items = new String[hashCategories.size()];	
-    Iterator<String> keySetIterator = hashCategories.keySet().iterator();
-	int index=0;	
-	while(keySetIterator.hasNext()){
-		String key = keySetIterator.next();
-		Category cat = (Category)hashCategories.get(key);		
-		items[index++] = cat.toString();	
-		
-	  }
-	return items;
+		String[] items = new String[hashCategories.size()];
+		int index=0;
+		for(Iterator<Category> it = hashCategories.values().iterator(); it.hasNext();)
+		{
+			items[index++] = it.next().toString();
+		}    
+		return items;
     }
 	
 	public void addListener(IListenEvents listener){
 		categoryEventListeners.add(listener);	
 	}
-	public boolean isAccountExistforCategory(String categoryString){
-		boolean isExist = false;
-		Category cat = new Category(categoryString);
-		String categoryName = cat.removeTrailingStrings();
-		int cnt = dbActions.accountCount(categoryName);
-		if(cnt>0){
-			isExist = true;
-		}		
-		return isExist;
+	public boolean hasCategory(String formattedCategoryName){
+		return getCategoryByFormattedName(formattedCategoryName) != null;		
+	}
+	
+	public boolean hasAnyAccounts(String formattedCategoryName){
+		Category matchingCategory = getCategoryByFormattedName(formattedCategoryName);
+		if (matchingCategory == null)
+		{
+			return false;
+		}
+		return matchingCategory.getAccountCount()  > 0;
+	}
+	
+	
+	private Category getCategoryByFormattedName(String formattedCategoryName){
+		Category matchingCategory = null;
+		for (Iterator<Category> it = hashCategories.values().iterator(); it.hasNext(); ) {
+    	    Category currentCat = it.next();
+    	    if (currentCat.getFormattedName().equals(formattedCategoryName))
+    	    {    	    	
+    	    	matchingCategory = currentCat;    	    	
+    	    	break;
+    	    }
+    	}
+		return matchingCategory;
 	}
 }

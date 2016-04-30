@@ -593,8 +593,8 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		lstCategory.add(cat.toString(), lstCategory.getItemCount());		
 	}
 	@Override
-	public void categoryDeleted(Category cat) {
-	      lstCategory.remove(cat.getName());
+	public void categoryDeleted(String formattedCategoryName) {
+	      lstCategory.remove(formattedCategoryName);
 	}
 	@Override
 	public void accountAdded(Account account) {

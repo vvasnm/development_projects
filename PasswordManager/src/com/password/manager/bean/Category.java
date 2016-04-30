@@ -5,6 +5,7 @@ public class Category {
 	
 	private int totalAccounts;
 	private String _name;
+	private String _formattedName;
 	
 	public Category(String name)
 	{
@@ -14,6 +15,7 @@ public class Category {
 	public void setAccountCount(int totalAccounts)
 	{
 		 this.totalAccounts = totalAccounts;
+		 _formattedName = "";		 
 	}
 	
 	public int getAccountCount()
@@ -36,16 +38,15 @@ public class Category {
 	public String toString()
 	{
 		System.out.println("_totalAccounts.." + getAccountCount());
-		return _name.toUpperCase() + " ( " + getAccountCount() +" )" ;
-		
-	}
-
-	public String removeTrailingStrings(){
-		String  categoryValue = _name;					
-		String delims = " [(] ";
-		String[] category = categoryValue.split(delims);
-		return category[0];
+		return getFormattedName();
 	}
 	
-
+	public String getFormattedName()
+	{
+		if (_formattedName.isEmpty())
+		{
+			_formattedName = _name.toUpperCase() + " ( " + getAccountCount() +" )" ;
+		}
+		return  _formattedName;		
+	}
 }

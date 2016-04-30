@@ -125,12 +125,12 @@ public class AddNewCategory extends Dialog {
 		btnDeleteCategory.setText(Constants.DELETE_CATEGORY_TIP);							
 		btnDeleteCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e){
+			public void widgetSelected(SelectionEvent e){				
 				if(listExistingCategory.getSelectionCount()>0){
 					System.out.println("selection String: " + listExistingCategory.getSelection()[0].toString());
-					if(!CategoryRepository.getInstance().isAccountExistforCategory(listExistingCategory.getSelection()[0])){
-						//CategoryRepository.getInstance().removeCategories(listExistingCategory.getSelection()[0],listExistingCategory.getSelectionIndex());
-						CategoryRepository.getInstance().removeCategories(listExistingCategory.getSelection()[0]);
+					String formattedCategoryName =  listExistingCategory.getSelection()[0];
+					if(!CategoryRepository.getInstance().hasAnyAccounts(formattedCategoryName)){
+						CategoryRepository.getInstance().removeCategories(formattedCategoryName);
 						listExistingCategory.remove(listExistingCategory.getSelectionIndex());
 					}
 					else{

@@ -355,22 +355,8 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		cmbCategory.setLayoutData(gd_cmbCategory);
 		cmbCategory.setText("\"\"");
 		cmbCategory.setEnabled(false);
-		/*cmbCategory.addSelectionListener(new SelectionListener() {			
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				DBActionsImpl dbActions_1 = new DBActionsImpl();
-				QueryData qdata = dbActions_1.getCategoriesFromDB();
-				if(qdata.getCategory()!=null){
-					cmbCategory.setItems(qdata.getCategory());
-				}	
-				if((cmbCategory.getText()!=null) && (cmbCategory.getText()!="")){
-					btnAddAccount.setEnabled(true);											
-				}				
-			}			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {				
-			}
-		});	*/																		
+		cmbCategory.setItems(CategoryRepository.getInstance().setAllCategories());
+																	
 			
 		btnAddAccount = new Button(cmpAddAccounts, SWT.NONE);
 		btnAddAccount.setToolTipText("Click to Add Account to DB");
@@ -590,11 +576,13 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 	
 	@Override
 	public void categoryAdded(Category cat) {
-		lstCategory.add(cat.toString(), lstCategory.getItemCount());		
+		lstCategory.add(cat.toString(), lstCategory.getItemCount());	
+		cmbCategory.add(cat.getName());
 	}
 	@Override
 	public void categoryDeleted(String formattedCategoryName) {
 	      lstCategory.remove(formattedCategoryName);
+	      cmbCategory.remove(formattedCategoryName);
 	}
 	@Override
 	public void accountAdded(Account account) {

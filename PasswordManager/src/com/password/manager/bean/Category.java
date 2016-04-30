@@ -37,7 +37,6 @@ public class Category {
 	@Override
 	public String toString()
 	{
-		System.out.println("_totalAccounts.." + getAccountCount());
 		return getFormattedName();
 	}
 	

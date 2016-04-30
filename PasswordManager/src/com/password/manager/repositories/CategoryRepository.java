@@ -25,12 +25,20 @@ public class CategoryRepository {
 			for(String itm: qData.getCategory()){
 				Category cat =	new Category(itm);
 				int cnt = dbActions.accountCount(itm);				
-				cat.setAccountCount(cnt);
-				System.out.println("Count..."+ cat.getAccountCount());				
+				cat.setAccountCount(cnt);								
 				hashCategories.put(itm, cat);			
 			}
 		}		
 	}
+	public String [] setAllCategories(){
+		String[] items = new String[hashCategories.size()];
+		int index=0;
+		for(Iterator<Category> it = hashCategories.values().iterator(); it.hasNext();)
+		{
+			items[index++] = it.next().getName().toUpperCase();
+		}    
+		return items;
+    }
 	public void Add(String categoryName){
 		qData.setSelectedCategory(categoryName);
 		dbActions.insertIntocategory(qData);
@@ -52,9 +60,7 @@ public class CategoryRepository {
 		hashCategories.remove(catName);
 		for (IListenEvents categoryEventListener : categoryEventListeners)
 			 categoryEventListener.categoryDeleted(formattedCategoryName);	
-	}	
-	
-	
+	}		
 	public String[] GetAll(){
 		String[] items = new String[hashCategories.size()];
 		int index=0;

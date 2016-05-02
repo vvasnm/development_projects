@@ -14,12 +14,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.password.manager.bean.Account;
 import com.password.manager.bean.Category;
-import com.password.manager.bean.QueryData;
-import com.password.manager.dao.impl.DBActionsImpl;
 import com.password.manager.listeners.IListenEvents;
+import com.password.manager.repositories.AccountRepository;
 import com.password.manager.repositories.CategoryRepository;
 import com.password.manager.util.Constants;
 import com.password.manager.util.Utilities;
@@ -27,14 +25,12 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.List;
 
-
 public class DetailsPage1 extends Dialog implements IListenEvents{
-    	
+   	
 	protected Object result;
 	protected Shell shlDetails;
 	private Text txtAccountName,txtUsername,txtPassword,txtRetypePassword,txtAcc,txtUname,txtPass;
@@ -47,14 +43,12 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 	private List lstCategory;
 	private Label lblExistingCategory;
 	private Button btnUpdate;  
-    private int j=0;    
-      
+            
     Utilities util_1 = new Utilities();
     
 	public DetailsPage1(Shell parent, int style) {
 		super(parent, style);	
-		CategoryRepository.getInstance().addListener(this);
-		
+		CategoryRepository.getInstance().addListener(this);		
 	}	
 	public Object open() {
 		createContents();
@@ -100,9 +94,11 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		lstCategory.setItems(CategoryRepository.getInstance().GetAll());		
 		lstCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-			
-				
+			public void widgetSelected(SelectionEvent e) {				
+			    if(lstCategory.getSelectionCount()>0){
+			    	listAccounts.setItems(AccountRepository.getInstance().GetAll());
+			    	listAccounts.setEnabled(true);
+			    }				
 			}
 		});			  
 		lblSelectTheCategory = new Label(cmpAccounts, SWT.NONE);
@@ -111,7 +107,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		gd_lblSelectTheCategory.heightHint = 40;
 		gd_lblSelectTheCategory.widthHint = 300;
 		lblSelectTheCategory.setLayoutData(gd_lblSelectTheCategory);
-		lblSelectTheCategory.setText("**Use \"Add Cat\" Button to Add new \r\nCategory**");
+		lblSelectTheCategory.setText("**Use \"Manage Cat\" Button to \r\nAdd/Delete Categories**");
 		
 		btnManageCategory = new Button(cmpAccounts, SWT.NONE);
 		GridData gd_btnManageCategory = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -144,18 +140,12 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		listAccounts.setLayoutData(gd_listAccounts);
 		listAccounts.setEnabled(false);
 		listAccounts.setToolTipText("Display Account Information ");
-		/*listAccounts.addSelectionListener(new SelectionAdapter() {
+		listAccounts.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				QueryData qData = new QueryData();
-				DBActionsImpl dbActions_1 = new DBActionsImpl();				
+			public void widgetSelected(SelectionEvent e) {								
 				if((listAccounts.getSelectionCount()>0)  ){
-					String [] account = listAccounts.getSelection();					
-					qData.setWhereClauseField(account[0]);
-					QueryData dbvalues = dbActions_1.getAccountData(qData);
-					txtAcc.setText(dbvalues.getAccountDB());
-					txtUname.setText(dbvalues.getUserNameDB());
-					txtPass.setText(dbvalues.getPassWordDB());
+					
+					
 					txtPass.setVisible(false);
 					btnDeleteAccInfo.setEnabled(true);					
 				}
@@ -165,7 +155,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 					mBox.open();
 				}
 			}
-		});	*/		
+		});			
 		Label lblSelectTheAccounts = new Label(comAccounts1, SWT.NONE);
 		GridData gd_lblSelectTheAccounts = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblSelectTheAccounts.widthHint = 270;
@@ -179,41 +169,12 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		btnDeleteAccInfo.setLayoutData(gd_btnDeleteAccInfo);
 		btnDeleteAccInfo.setText("Delete");
 		btnDeleteAccInfo.setEnabled(false);
-		/*btnDeleteAccInfo.addSelectionListener(new SelectionAdapter() {
+		btnDeleteAccInfo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Chkpt1...");
-				String [] selectedAccount = null;
-				int k=0;
-				DBActionsImpl dbActions = new DBActionsImpl();	
-				QueryData qData = new QueryData();				
-				if(listAccounts.getSelectionCount()>0){
-					int selectionIndex = listAccounts.getSelectionIndex();
-					selectedAccount = listAccounts.getSelection();
-					qData.setSelectedAccount(selectedAccount[0]);
-					dbActions.deleteAccount(qData);
-					clearWidgets();
-					listAccounts.remove(selectionIndex);
-					// This code is to update the List Category with the number of accounts after any additions
-					qData = dbActions.getCategoriesFromDB();						
-					if(qData.getCategory()!=null){														
-						int len = qData.getCategory().length;
-						String [] values1 = new  String [len];
-							for(String itm: qData.getCategory()){				
-								int cnt = dbActions.accountCount(itm);										
-								String val1 = itm + " - " + Integer.toString(cnt);												
-								values1[k] = val1;
-								k++;								
-							} lstCategory.setItems(values1);								
-					}
-				}
-				else{
-					MessageBox mBox = new MessageBox(shlDetails);
-					mBox.setMessage(Constants.VIEW_INFO_ERROR);
-					mBox.open();
-				}
+				
 			}
-		});*/
+		});
 		cmpAddAccounts = new Composite(shlDetails, SWT.NONE);
 		cmpAddAccounts.setLayout(new GridLayout(2, false));
 		GridData gd_cmpAddAccounts = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -355,9 +316,8 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		cmbCategory.setLayoutData(gd_cmbCategory);
 		cmbCategory.setText("\"\"");
 		cmbCategory.setEnabled(false);
-		cmbCategory.setItems(CategoryRepository.getInstance().setAllCategories());
-																	
-			
+		cmbCategory.setItems(CategoryRepository.getInstance().setAllCategories());		
+																					
 		btnAddAccount = new Button(cmpAddAccounts, SWT.NONE);
 		btnAddAccount.setToolTipText("Click to Add Account to DB");
 		GridData gd_btnAddAccount = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -367,55 +327,31 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		btnAddAccount.setText("Add Acc");
 		btnAddAccount.setEnabled(false);
 		new Label(cmpAddAccounts, SWT.NONE);
-		/*btnAddAccount.addSelectionListener(new SelectionAdapter() {
+		btnAddAccount.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Utilities util = new Utilities();
-				util.writeLogFile("\nINFO:Add Account Clicked.");
-				DBActionsImpl dbActions = new DBActionsImpl();					
-				QueryData qdata1 = new QueryData();
-				QueryData qdata2 = setNewAccountDetails( qdata1);				
-				if (isDataNotNull()){									
-					if (isRetypePasswordMatched()) {
-						if(!isAccountAlreadyExist(qdata2.getPmHead())){
-							dbActions.createNewAccount(qdata2);
-							//lstCategory.removeAll();  // Removing to refresh the List after adding the Accounts
-							QueryData qdata3 = dbActions.getCategoriesFromDB();	
-							 // This code is to update the List Category with the number of accounts after any additions
-							if(qdata3.getCategory()!=null){														
-								int len = qdata3.getCategory().length;
-								System.out.println("lenght: " + len);
-								String [] values1 = new  String [len];
-									for(String itm: qdata3.getCategory()){				
-										int cnt = dbActions.accountCount(itm);										
-										String val1 = itm + " - " + Integer.toString(cnt);												
-										values1[j] = val1;
-										j++;												
-									} lstCategory.setItems(values1);								
-							}							
-						}else {
-							MessageBox mBox = new MessageBox(shlDetails);
-							mBox.setMessage(Constants.ACCOUNT_EXIST);
-							mBox.open();							
-						}													
-					}					
-					else {
-						MessageBox mBox = new MessageBox(shlDetails);
-						mBox.setMessage(Constants.EMPTY_FIELDS);
-						mBox.open();
-						btnAddAccount.setEnabled(false);
+				if(isDataNotNull()){
+					if(isRetypePasswordMatched()){						
+						AccountRepository.getInstance().addAccount(txtAccountName.getText().toUpperCase(),
+								                                   txtUsername.getText().toUpperCase(), 
+								                                   txtPassword.getText().toUpperCase(),
+								                                   cmbCategory.getText().toUpperCase());
+						clearWidgets();
 					}
-					lstCategory.deselectAll();
-					listAccounts.removeAll();
-				}				
+					else{
+						MessageBox mBox = new MessageBox(shlDetails);
+						mBox.setMessage(Constants.PASSWORD_MATCH);
+						mBox.open();
+						clearWidgets();
+					}						
+				}
 				else{
 					MessageBox mBox = new MessageBox(shlDetails);
-					mBox.setMessage(Constants.PASSWORD_MATCH);
+					mBox.setMessage(Constants.EMPTY_FIELDS);
 					mBox.open();
-				}
-				clearWidgets();	
+				}	
 			}
-		});*/
+		});
 		Composite cmpView = new Composite(shlDetails, SWT.NONE);
 		cmpView.setLayout(new GridLayout(2, false));
 		GridData gd_cmpView = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1);
@@ -546,15 +482,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		txtUname.setText("");
 		txtPass.setText("");	
 	}
-	private Account setNewAccountDetails(Account acc){
-		acc.setNewAccountName(txtAccountName.getText().toUpperCase());
-		acc.setNewAccountCategory(cmbCategory.getText().toUpperCase());
-		acc.setNewAccountUsername(txtUsername.getText().toUpperCase());
-		acc.setNewAccountPassword(txtPassword.getText().toUpperCase());
-		//acc.setPmReNewPassword(txtRetypePassword.getText().toUpperCase());
-		
-		return acc;		
-	}
+	
 	private boolean isDataNotNull(){
 		boolean isNotNull = false;		
 		if((txtAccountName.getText()!=null) && ((txtAccountName.getText()!=""))
@@ -582,7 +510,8 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 	@Override
 	public void categoryDeleted(String formattedCategoryName) {
 	      lstCategory.remove(formattedCategoryName);
-	      //cmbCategory.remove(formattedCategoryName);
+	      //System.out.println(CategoryRepository.getInstance().getCategoryByFormattedName(formattedCategoryName).getName());
+	      //cmbCategory.remove( CategoryRepository.getInstance().getCategoryByFormattedName(formattedCategoryName).getName());
 	}
 	@Override
 	public void accountAdded(Account account) {

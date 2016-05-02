@@ -1,4 +1,3 @@
-
 package com.password.manager.ui;
 
 import org.eclipse.swt.widgets.Dialog;
@@ -95,9 +94,16 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		lstCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {				
-			    if(lstCategory.getSelectionCount()>0){
-			    	listAccounts.setItems(AccountRepository.getInstance().GetAll());
-			    	listAccounts.setEnabled(true);
+			    if(lstCategory.getSelectionCount()>0){			   
+			    	if(CategoryRepository.getInstance().hasAnyAccounts(lstCategory.getSelection()[0])){
+			    		listAccounts.setItems(AccountRepository.getInstance().GetAll());
+				    	listAccounts.setEnabled(true);
+			    	}
+			    	else{
+			    		listAccounts.removeAll();
+			    		listAccounts.add(Constants.NO_ACCOUNTS);
+			    		btnDeleteAccInfo.setEnabled(false);
+			    	}			 	
 			    }				
 			}
 		});			  
@@ -117,8 +123,8 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		btnManageCategory.setText("Manage Cat");
 		btnManageCategory.addSelectionListener(new SelectionAdapter() {			
 			public void widgetSelected(SelectionEvent e) {											
-				AddNewCategory category_dialog = new AddNewCategory(shlDetails, SWT.NONE);				
-				category_dialog.open();					
+				AddNewCategory categoryDialog = new AddNewCategory(shlDetails, SWT.NONE);				
+				categoryDialog.open();					
 			}
 		});		
 		Composite comAccounts1 = new Composite(shlDetails, SWT.NONE);
@@ -510,8 +516,11 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 	@Override
 	public void categoryDeleted(String formattedCategoryName) {
 	      lstCategory.remove(formattedCategoryName);
-	      //System.out.println(CategoryRepository.getInstance().getCategoryByFormattedName(formattedCategoryName).getName());
-	      //cmbCategory.remove( CategoryRepository.getInstance().getCategoryByFormattedName(formattedCategoryName).getName());
+	      if(formattedCategoryName!=null){
+				String delimiter = " [(] ";
+				String [] category =  formattedCategoryName.split(delimiter);
+				cmbCategory.remove(category[0]);
+			}      
 	}
 	@Override
 	public void accountAdded(Account account) {

@@ -88,7 +88,7 @@ public class CategoryRepository {
 	}
 	
 	
-	public Category getCategoryByFormattedName(String formattedCategoryName){
+	private Category getCategoryByFormattedName(String formattedCategoryName){
 		Category matchingCategory = null;
 		for (Iterator<Category> it = hashCategories.values().iterator(); it.hasNext(); ) {
     	    Category currentCat = it.next();

@@ -31,5 +31,6 @@ public class Constants {
 	public static final String CATEGORY_INSTRUCTIONS = "1) Check the Existing Category from List above before creating it.\r\n2) Check is to avoid duplicates.\r\n\r\n";
 	public static final String SAVE_CATEGORY_TOOLTIP = "Click to Save Category";
 	public static final String DELETE_CATEGORY_TIP = "Click to Delete Category";
+	public static final String NO_ACCOUNTS = "No Accounts to Display!!";
 	
 }

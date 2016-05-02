@@ -6,6 +6,7 @@ public class Category {
 	private int totalAccounts;
 	private String _name;
 	private String _formattedName="";
+	private String unFormattedName = "";
 	
 	public Category(String name)
 	{
@@ -48,4 +49,6 @@ public class Category {
 		}
 		return  _formattedName;		
 	}
+	
+	
 }

@@ -96,7 +96,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 			public void widgetSelected(SelectionEvent e) {				
 			    if(lstCategory.getSelectionCount()>0){			   
 			    	if(CategoryRepository.getInstance().hasAnyAccounts(lstCategory.getSelection()[0])){
-			    		listAccounts.setItems(AccountRepository.getInstance().GetAll());
+			    		listAccounts.setItems(AccountRepository.getInstance().GetAll(lstCategory.getSelection()[0]));
 				    	listAccounts.setEnabled(true);
 			    	}
 			    	else{
@@ -150,8 +150,10 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 			@Override
 			public void widgetSelected(SelectionEvent e) {								
 				if((listAccounts.getSelectionCount()>0)  ){
-					
-					
+					String items [] = AccountRepository.getInstance().getAccountDetails(listAccounts.getSelection()[0]);
+					txtAcc.setText(items[0]);
+					txtUname.setText(items[1]);
+					txtPass.setText(items[2]);					
 					txtPass.setVisible(false);
 					btnDeleteAccInfo.setEnabled(true);					
 				}
@@ -511,7 +513,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 	@Override
 	public void categoryAdded(Category cat) {
 		lstCategory.add(cat.toString(), lstCategory.getItemCount());	
-		cmbCategory.add(cat.getName());
+		cmbCategory.add(cat.getName().toUpperCase());
 	}
 	@Override
 	public void categoryDeleted(String formattedCategoryName) {
@@ -523,8 +525,8 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 			}      
 	}
 	@Override
-	public void accountAdded(Account account) {
-		// TODO Auto-generated method stub
+	public void accountAdded(Account account,Category cat) {
+		
 		
 	}
 	@Override

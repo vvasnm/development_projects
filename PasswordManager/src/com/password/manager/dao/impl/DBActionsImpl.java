@@ -92,28 +92,26 @@ public class DBActionsImpl implements DBActions {
 	  }	      										
 	}    
 	@Override
-	public QueryData getAccountData(QueryData qData) {
-		Connection con = null;
-		//util.writeLogFile( "Inside selectPMDetails function...");
-	    String whereClause = null;  
+	public Account getAccountData(String account) {
+		Account aCC = new Account(account);
+		Connection con = null;		
+	    String accValue = null;  
 		con  = DBConnection.getDBConnection();			
 		try {						
 			Statement stmt = con.createStatement();			
 			con.setAutoCommit(false);			
-			whereClause = qData.getWhereClauseField();			
-			String sqlQuery = "SELECT * FROM PPASSWORDDETAILS WHERE ACCOUNT = " + "'" + whereClause + "'" +  ";";			
-			ResultSet rs = stmt.executeQuery( sqlQuery );
-			int i=0;
+			accValue = account;			
+			String sqlQuery = "SELECT * FROM PPASSWORDDETAILS WHERE ACCOUNT = " + "'" + accValue + "'" +  ";";			
+			ResultSet rs = stmt.executeQuery( sqlQuery );			
 			while (rs.next()){					
-				 String  account   = rs.getString("ACCOUNT"); 							 
+				 String  acc       = rs.getString("ACCOUNT"); 							 
 				 String  userName  = rs.getString("USERNAME");
 		         String  password  = rs.getString("PASSWORD");
-		         i++;
-		         qData.setAccountDB(account);	
-		         qData.setUserNameDB(userName);
-		         qData.setPassWordDB(password);		                 
-		     }
-			qData.setRowCnt(i);
+		         
+		         aCC.setNewAccountName(acc);;	
+		         aCC.setNewAccountUsername(userName);
+		         aCC.setNewAccountPassword(password);		                 
+		     }			
 			rs.close();
 		    stmt.close();						
 		    con.close();									
@@ -121,7 +119,7 @@ public class DBActionsImpl implements DBActions {
 	  catch (SQLException e) {				  
 		  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 	      System.exit(0);}	      				
-		return qData;		
+		return aCC;		
 	}	
 	@Override
 	public void insertIntocategory(QueryData qData) {
@@ -132,7 +130,7 @@ public class DBActionsImpl implements DBActions {
 			 Statement stmt = null;
 			 String sqlQuery = null;
 			 stmt = con.createStatement();
-			 String category = qData.getSelectedCategory();
+			 String category = qData.getSelectedCategory().toUpperCase();
 			 sqlQuery = "INSERT INTO PCATEGORY (CATEGORY) VALUES ('" + category + "'" + ")" + ";";			    				 
 			 stmt.executeUpdate(sqlQuery);
 			 con.commit();

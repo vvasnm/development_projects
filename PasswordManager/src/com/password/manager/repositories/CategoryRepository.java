@@ -43,7 +43,6 @@ public class CategoryRepository {
 		qData.setSelectedCategory(categoryName);
 		dbActions.insertIntocategory(qData);
 		Category cat = new Category(categoryName);
-		//categories.add(cat);
 		hashCategories.put(cat.getName(), cat);
 		 for (IListenEvents categoryEventListener : categoryEventListeners)
 			 categoryEventListener.categoryAdded(cat);	

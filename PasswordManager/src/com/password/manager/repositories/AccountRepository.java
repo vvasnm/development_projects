@@ -1,8 +1,6 @@
 package com.password.manager.repositories;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.password.manager.bean.Account;
 import com.password.manager.bean.Category;
 import com.password.manager.bean.QueryData;
@@ -20,23 +18,7 @@ public class AccountRepository {
 	public static AccountRepository getInstance(){
 		return accountRepository;
 	}	
-	private AccountRepository(){
-		qData = dbActions.getCategoriesFromDB();
-		if(qData.getCategory()!=null){		
-			for(String itm: qData.getCategory()){								
-				int cnt = dbActions.accountCount(itm);
-				if(cnt>0){
-				 qData = dbActions.getExistingAccounts(itm);
-				 if(qData.getAccount()!=null){
-					 for(String account: qData.getAccount()){
-						 Account acc = new Account(account);
-						 Accounts.add(acc);
-					 }
-				 }										
-				}				
-			}
-		}		
-	}
+	private AccountRepository(){}
 	
 	public void addAccount(String accountName, String accUsername,String accPassword, String accCategory){
 		Account account = new Account(accountName);
@@ -44,31 +26,42 @@ public class AccountRepository {
 		account.setNewAccountUsername(accUsername);
 		account.setNewAccountPassword(accPassword);
 		account.setNewAccountCategory(accCategory);
-		dbActions.createNewAccount(account);		
-		Accounts.add(account);
-		 for (IListenEvents eventListener : eventListeners){
-			 eventListener.accountAdded(account);
-		 }			 
+		Category cat = new Category(accCategory);
+		if(!isAccountAlreadyExist(account.getNewAccountCategory(),account.getNewAccountName())){
+			dbActions.createNewAccount(account);		
+			Accounts.add(account);
+			 for (IListenEvents eventListener : eventListeners){
+				 eventListener.accountAdded(account,cat);
+			 }
+		}
+					 
     }
 	public void removeAccount (Account account){
 		
-	}
-	public String[] GetAll(){
-		String[] items = new String[Accounts.size()];
+	}	
+	public String[] GetAll(String formattedCategory){
+		String delimiter = " [(] ";
+		String [] cat = formattedCategory.split(delimiter);		
+		qData = dbActions.getExistingAccounts(cat[0]);
+		String [] items = new String [qData.getAccount().length];
 		int index=0;
-		for(Account acc : Accounts )
-		{
-			items[index++] = acc.getNewAccountName();
-		}    
+		if(qData.getAccount()!=null){		 
+	    	for(String account: qData.getAccount()){				    		 											 
+				 items[index++] = account;				 																		 
+		    }
+	    }			  
 		return items;
     }
-	public void getAccountDetails(String formattedCatString){
-		
-		
-		
+	public String [] getAccountDetails(String account){
+		Account  Acc =  dbActions.getAccountData(account);
+		String [] items = new String [3];
+		items[0] = Acc.getNewAccountName();
+		items[1] = Acc.getNewAccountUsername();
+		items[2] = Acc.getNewAccountPassword();	
+		return items;
 	}
 	
-	boolean isAccountAlreadyExist(String cagegoryName,String accountName){
+	private boolean isAccountAlreadyExist(String cagegoryName,String accountName){
 		boolean isExist = false;				
 		qData = dbActions.getExistingAccounts(cagegoryName);
 		String [] accounts = qData.getAccount();

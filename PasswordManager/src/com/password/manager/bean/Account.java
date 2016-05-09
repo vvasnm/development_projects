@@ -3,13 +3,14 @@ package com.password.manager.bean;
 public class Account {
     
 	private String newAccountName = null;
+	private String name = null;
 	private String newAccountUsername = null;
 	private String newAccountPassword = null;
 	private String newAccountCategory = null;
 	private String [] account = null;
 	
 	public Account(String accountName){
-		newAccountName = accountName;
+		name = accountName;
 	}
 		
 	public String[] getAccount() {
@@ -42,5 +43,7 @@ public class Account {
 	}
 	public void setNewAccountCategory(String newAccountCategory) {
 		this.newAccountCategory = newAccountCategory;
-	}		
+	}
+	
+	
 }

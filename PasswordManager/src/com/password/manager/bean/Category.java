@@ -2,7 +2,6 @@ package com.password.manager.bean;
 
 public class Category {
 	
-	
 	private int totalAccounts;
 	private String _name;
 	private String _formattedName="";
@@ -42,8 +41,7 @@ public class Category {
 		this.accCnt = accCnt;
 	}
 	public String accountCount(){
-		
-		System.out.println("getAccCnt()..." + getAccCnt());
+				
 		return _name.toUpperCase() + " ( " +  getAccCnt() +" )" ;
 	}
 	

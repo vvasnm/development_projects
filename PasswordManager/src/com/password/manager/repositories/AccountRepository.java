@@ -14,7 +14,7 @@ public class AccountRepository {
 	private DBActionsImpl dbActions = new DBActionsImpl();
 	private static AccountRepository accountRepository = new AccountRepository();
 	private ArrayList<IListenEvents> eventListeners = new ArrayList<IListenEvents>();
-	
+
 	
 	public static AccountRepository getInstance(){
 		return accountRepository;
@@ -46,16 +46,25 @@ public class AccountRepository {
 		
 	}	
 	public String[] GetAll(String formattedCategory){		
+		//Category cat = CategoryRepository.getInstance().getCategoryByFormattedName(formattedCategory);
+		int cnt = 0;
 		String delimiter = " [(] ";
 		String [] cat = formattedCategory.split(delimiter);		
 		qData = dbActions.getExistingAccounts(cat[0]);
-		String [] items = new String [qData.getAccount().length];
+		if(qData.getAccount()!=null)
+		{
+			cnt = qData.getAccount().length;
+		}
+		String [] items = new String [cnt];
 		int index=0;
 		if(qData.getAccount()!=null){		 
 	    	for(String account: qData.getAccount()){				    		 											 
-				 items[index++] = account;				 																		 
+				 items[index++] = account;	
+				// There is a Bug here to be fixed, as I am initializing the count to zero, if if(qData.getAccount()!=null) 
+				 //then it fetchs a null value and will break the code in detailspage1 line 100.
 		    }
-	    }			  
+	    }
+					  
 		return items;
     }
 	public String [] getAccountDetails(String account){

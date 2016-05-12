@@ -96,9 +96,9 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 			@Override
 			public void widgetSelected(SelectionEvent e) {				
 			    if(lstCategory.getSelectionCount()>0){			    	
-			    	Boolean isAccountExist =  CategoryRepository.getInstance().hasAnyAccounts(lstCategory.getSelection()[0]);
-			    	if(isAccountExist){
-			    		listAccounts.setItems(AccountRepository.getInstance().GetAll(lstCategory.getSelection()[0]));
+			    	String [] items = AccountRepository.getInstance().GetAll(lstCategory.getSelection()[0]);
+			    	if(items!=null){
+			    		listAccounts.setItems(items);
 				    	listAccounts.setEnabled(true);
 			    	}
 			    	else{

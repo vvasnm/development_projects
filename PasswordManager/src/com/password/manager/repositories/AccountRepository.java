@@ -15,31 +15,37 @@ public class AccountRepository {
 	private static AccountRepository accountRepository = new AccountRepository();
 	private ArrayList<IListenEvents> eventListeners = new ArrayList<IListenEvents>();
 	
+	
 	public static AccountRepository getInstance(){
 		return accountRepository;
 	}	
-	private AccountRepository(){}
-	
+	private AccountRepository(){
+		
+	}
+	public void addListener(IListenEvents listener){
+		eventListeners.add(listener);	
+	}
 	public void addAccount(String accountName, String accUsername,String accPassword, String accCategory){
 		Account account = new Account(accountName);
 		account.setNewAccountName(accountName);
 		account.setNewAccountUsername(accUsername);
 		account.setNewAccountPassword(accPassword);
-		account.setNewAccountCategory(accCategory);
-		Category cat = new Category(accCategory);
-		if(!isAccountAlreadyExist(account.getNewAccountCategory(),account.getNewAccountName())){
-			dbActions.createNewAccount(account);		
+		account.setNewAccountCategory(accCategory);						
+		if(!isAccountAlreadyExist(account.getNewAccountCategory(),account.getNewAccountName())){						
+			dbActions.createNewAccount(account);
+			int cnt = dbActions.accountCount(accCategory);
+			Category cat = new Category(accCategory);
+			cat.setAccCnt(cnt);
 			Accounts.add(account);
-			 for (IListenEvents eventListener : eventListeners){
+			 for (IListenEvents eventListener : eventListeners){				
 				 eventListener.accountAdded(account,cat);
 			 }
-		}
-					 
+		}					 
     }
 	public void removeAccount (Account account){
 		
 	}	
-	public String[] GetAll(String formattedCategory){
+	public String[] GetAll(String formattedCategory){		
 		String delimiter = " [(] ";
 		String [] cat = formattedCategory.split(delimiter);		
 		qData = dbActions.getExistingAccounts(cat[0]);
@@ -75,4 +81,5 @@ public class AccountRepository {
 		}		
 		return isExist;	
 	}
+	
 }

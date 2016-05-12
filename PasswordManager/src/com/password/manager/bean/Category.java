@@ -6,7 +6,7 @@ public class Category {
 	private int totalAccounts;
 	private String _name;
 	private String _formattedName="";
-	//private String unFormattedName = "";
+	private int accCnt;
 	
 	public Category(String name)
 	{
@@ -34,6 +34,18 @@ public class Category {
 	{
 		return _name;
 	}
+	public int getAccCnt() {
+		return accCnt;
+	}
+
+	public void setAccCnt(int accCnt) {
+		this.accCnt = accCnt;
+	}
+	public String accountCount(){
+		
+		System.out.println("getAccCnt()..." + getAccCnt());
+		return _name.toUpperCase() + " ( " +  getAccCnt() +" )" ;
+	}
 	
 	@Override
 	public String toString()
@@ -49,6 +61,5 @@ public class Category {
 		}
 		return  _formattedName;		
 	}
-	
 	
 }

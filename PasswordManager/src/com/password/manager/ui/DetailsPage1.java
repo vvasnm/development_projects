@@ -47,7 +47,8 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
     
 	public DetailsPage1(Shell parent, int style) {
 		super(parent, style);	
-		CategoryRepository.getInstance().addListener(this);		
+		CategoryRepository.getInstance().addListener(this);	
+		AccountRepository.getInstance().addListener(this);
 	}	
 	public Object open() {
 		createContents();
@@ -94,8 +95,9 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		lstCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {				
-			    if(lstCategory.getSelectionCount()>0){			   
-			    	if(CategoryRepository.getInstance().hasAnyAccounts(lstCategory.getSelection()[0])){
+			    if(lstCategory.getSelectionCount()>0){			    	
+			    	Boolean isAccountExist =  CategoryRepository.getInstance().hasAnyAccounts(lstCategory.getSelection()[0]);
+			    	if(isAccountExist){
 			    		listAccounts.setItems(AccountRepository.getInstance().GetAll(lstCategory.getSelection()[0]));
 				    	listAccounts.setEnabled(true);
 			    	}
@@ -344,6 +346,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 								                                   txtUsername.getText().toUpperCase(), 
 								                                   txtPassword.getText().toUpperCase(),
 								                                   cmbCategory.getText().toUpperCase());
+						
 						clearWidgets();
 					}
 					else{
@@ -525,10 +528,20 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 			}      
 	}
 	@Override
-	public void accountAdded(Account account,Category cat) {
-		
-		
+	public void accountAdded(Account account,Category cat) {		
+		String catName = cat.getName();
+		String [] Items = lstCategory.getItems();
+		for (String itm : Items){
+			if(itm.startsWith(catName))
+			{									
+				lstCategory.add(cat.accountCount(), lstCategory.indexOf(itm));				
+				lstCategory.remove(itm);
+				
+				
+			} 
+		}						
 	}
+		
 	@Override
 	public void deleteAccount(Account account) {
 		// TODO Auto-generated method stub

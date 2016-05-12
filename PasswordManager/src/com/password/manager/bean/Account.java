@@ -2,12 +2,14 @@ package com.password.manager.bean;
 
 public class Account {
     
+	
 	private String newAccountName = null;
 	private String name = null;
 	private String newAccountUsername = null;
 	private String newAccountPassword = null;
 	private String newAccountCategory = null;
 	private String [] account = null;
+	
 	
 	public Account(String accountName){
 		name = accountName;
@@ -45,5 +47,10 @@ public class Account {
 		this.newAccountCategory = newAccountCategory;
 	}
 	
-	
+	/*@Override
+	public String toString()
+	{
+		return _formattedName = _name.toUpperCase() + " ( " + getAccountCount() +" )" ;
+	}
+	*/
 }

@@ -77,7 +77,7 @@ public class CategoryRepository {
 		return getCategoryByFormattedName(formattedCategoryName) != null;		
 	}
 	
-	public boolean hasAnyAccounts(String formattedCategoryName){
+	public boolean hasAnyAccounts(String formattedCategoryName){		
 		Category matchingCategory = getCategoryByFormattedName(formattedCategoryName);
 		if (matchingCategory == null)
 		{
@@ -91,12 +91,12 @@ public class CategoryRepository {
 		Category matchingCategory = null;
 		for (Iterator<Category> it = hashCategories.values().iterator(); it.hasNext(); ) {
     	    Category currentCat = it.next();
-    	    if (currentCat.getFormattedName().equals(formattedCategoryName))
+    	    if (currentCat.getFormattedName().equals(formattedCategoryName))    	   
     	    {    	    	
     	    	matchingCategory = currentCat;    	    	
     	    	break;
     	    }
     	}
 		return matchingCategory;
-	}
+	}	
 }

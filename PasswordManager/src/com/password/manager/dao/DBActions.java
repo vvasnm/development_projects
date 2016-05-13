@@ -7,8 +7,8 @@ public interface DBActions {
 	//Account Related Methods
 	public void createNewAccount(Account acc);
 	public Account getAccountData(String account);
-	public void updateAccount(QueryData qData);
-	public void deleteAccount(QueryData qData);
+	public void updateAccount(String accountPassword,String accountName);
+	public void deleteAccount(String account);
 	//Category Related methods
 	public void insertIntocategory(QueryData qData);
 	public void deleteFromCategory(QueryData qData);

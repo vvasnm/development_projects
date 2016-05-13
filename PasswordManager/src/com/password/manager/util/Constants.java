@@ -19,6 +19,8 @@ public class Constants {
 	public static final String UNIQUE_USER_ERROR = "Only One user is permitted to use this application,Cant create new user...";
 	public static final String CLOSE_WARNING = "You are about to close the page,press 'OK' to close the Window.";
 	public static final String EMPTY_FIELDS = "Fields can't be Empty,please fill them and execute the operation.";
+	public static final String EMPTY_PASS = "Password Can't be empty, Please fill the password and execute the Operation. ";
+	public static final String PASS_UPDATE = "Password Updated successfully!!";
 	public static final String ACCOUNT_EXIST = "The Account already Exist,please enter different account.";
 	public static final String PASSWORD_MATCH = "Entered Password were not matched,please enter correct data.";
 	public static final String VIEW_INFO_ERROR = "Select the Account Details to perform the operation.";

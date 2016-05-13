@@ -104,6 +104,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 			    	else{
 			    		listAccounts.removeAll();
 			    		listAccounts.add(Constants.NO_ACCOUNTS);
+			    		listAccounts.setEnabled(false);
 			    		btnDeleteAccInfo.setEnabled(false);
 			    	}			 	
 			    }				
@@ -182,7 +183,11 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		btnDeleteAccInfo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
+				clearWidgets();
+				if(listAccounts.getSelectionCount()>0){					
+					String items [] = AccountRepository.getInstance().getAccountDetails(listAccounts.getSelection()[0]);
+					AccountRepository.getInstance().removeAccount(listAccounts.getSelection()[0],items[3]);
+				}
 			}
 		});
 		cmpAddAccounts = new Composite(shlDetails, SWT.NONE);
@@ -458,28 +463,22 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		
 		btnUpdate = new Button(cmpView, SWT.NONE);
 		btnUpdate.setEnabled(false);
-		/*btnUpdate.addSelectionListener(new SelectionAdapter() {
+		btnUpdate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				DBActionsImpl dbActions_2 = new DBActionsImpl();
-				QueryData qData_1 = new QueryData(); 
-				if((txtPass.getText()!=null) && (txtPass.getText()!="")){
-					int cnt = listAccounts.getSelectionCount();
-					if(cnt>0){
-						String [] selectedAccount = listAccounts.getSelection();
-						qData_1.setModifiedPassword(txtPass.getText());
-						qData_1.setSelectedAccount(selectedAccount[0]);
-						dbActions_2.updateAccount(qData_1);
-						clearWidgets();
-					}					
+				if(txtPass.getText()!=null){
+					AccountRepository.getInstance().updateAccountData(txtPass.getText(), txtAcc.getText());
+					MessageBox mBox = new MessageBox(shlDetails);
+					mBox.setMessage(Constants.PASS_UPDATE);
+					mBox.open();
 				}
 				else{
 					MessageBox mBox = new MessageBox(shlDetails);
-					mBox.setMessage(Constants.EMPTY_FIELDS);
+					mBox.setMessage(Constants.EMPTY_PASS);
 					mBox.open();
-				}				
+				}
 			}
-		});*/
+		});
 		btnUpdate.setText("Update");
 		new Label(cmpView, SWT.NONE);
 		
@@ -513,7 +512,6 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		}		
 		return isPasswordMatched;
 	}	
-	
 	@Override
 	public void categoryAdded(Category cat) {
 		lstCategory.add(cat.toString(), lstCategory.getItemCount());	
@@ -533,25 +531,24 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		String catName = cat.getName();
 		String [] Items = lstCategory.getItems();
 		for (String itm : Items){
-			if(itm.startsWith(catName))
-			{									
+			if(itm.startsWith(catName)){									
 				lstCategory.add(cat.accountCount(), lstCategory.indexOf(itm));				
-				lstCategory.remove(itm);
-				
-				
+				lstCategory.remove(itm);								
 			} 
 		}						
 	}
-		
 	@Override
-	public void deleteAccount(Account account) {
-		// TODO Auto-generated method stub
-		
+	public void deleteAccount(String accountName,Category category) {
+		listAccounts.remove(accountName);
+		String catName = category.getName();
+		String [] Items = lstCategory.getItems();
+		for (String itm : Items){
+			if(itm.startsWith(catName)){									
+				lstCategory.add(category.accountCount(), lstCategory.indexOf(itm));				
+				lstCategory.remove(itm);								
+			} 
+		}	
 	}
-	@Override
-	public void viewAccountDetails(Account account) {
-		// TODO Auto-generated method stub
 		
-	}		
 }
 

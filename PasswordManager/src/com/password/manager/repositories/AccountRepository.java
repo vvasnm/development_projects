@@ -42,8 +42,18 @@ public class AccountRepository {
 			 }
 		}					 
     }
-	public void removeAccount (Account account){
-		
+	public void removeAccount (String accountName,String category){
+		dbActions.deleteAccount(accountName);
+		int cnt = dbActions.accountCount(category);
+		Category cat = new Category(category);
+		cat.setAccCnt(cnt);
+		for (IListenEvents eventListener : eventListeners){				
+			 eventListener.deleteAccount(accountName,cat);
+		 }
+	}
+	
+	public void updateAccountData (String accountPassword,String accountName){		
+		dbActions.updateAccount(accountPassword,accountName);
 	}	
 	public String[] GetAll(String formattedCategory){				
 		int cnt = 0;
@@ -64,10 +74,11 @@ public class AccountRepository {
     }
 	public String [] getAccountDetails(String account){
 		Account  Acc =  dbActions.getAccountData(account);
-		String [] items = new String [3];
+		String [] items = new String [4];
 		items[0] = Acc.getNewAccountName();
 		items[1] = Acc.getNewAccountUsername();
 		items[2] = Acc.getNewAccountPassword();	
+		items[3] = Acc.getCategory();
 		return items;
 	}
 	

@@ -44,20 +44,13 @@ public class DBActionsImpl implements DBActions {
 		 }			
 	}			
 	@Override
-	public void updateAccount(QueryData qData) {
-		// update ppassworddetails set password = "svad2" where ACCOUNT="DBS" AND CATEGORY = "BANKS";
-		Connection con = null;
-		util.writeLogFile( "Inside deletePMDetails function...");			   
-		con  = DBConnection.getDBConnection();
-		String account = null;		
-		String password = null;
+	public void updateAccount(String accountPassword, String accountName) {		
+		Connection con = null;	 
+		con  = DBConnection.getDBConnection();		
 		try {						
 			Statement stmt = con.createStatement();			
 			con.setAutoCommit(false);
-			password = qData.getModifiedPassword();
-			account  = qData.getSelectedAccount();
-			String sqlQuery = "UPDATE PPASSWORDDETAILS SET PASSWORD = " + "'"+password+ "'" + " WHERE ACCOUNT= "+"'"+account+"'"+";";			
-			System.out.println(sqlQuery);
+			String sqlQuery = "UPDATE PPASSWORDDETAILS SET PASSWORD = " + "'"+accountPassword+ "'" + " WHERE ACCOUNT= "+"'"+accountName+"'"+";";						
 			stmt.executeUpdate(sqlQuery);						
 		    stmt.close();	
 		    con.commit();
@@ -69,22 +62,17 @@ public class DBActionsImpl implements DBActions {
 	  }	      				
 	}
 	@Override
-	public void deleteAccount(QueryData qData) {
+	public void deleteAccount(String accountName) {
 		Connection con = null;
-		util.writeLogFile( "Inside deletePMDetails function...");		
-	    String existingHead = null;
 		con  = DBConnection.getDBConnection();
-		existingHead = qData.getPmExistingHead();
 		try {						
 			Statement stmt = con.createStatement();			
 			con.setAutoCommit(false);
-			existingHead = qData.getSelectedAccount();
-			String sqlQuery = "DELETE FROM PPASSWORDDETAILS WHERE ACCOUNT= "+"'"+existingHead+"'" + ";";			
+			String sqlQuery = "DELETE FROM PPASSWORDDETAILS WHERE ACCOUNT= "+"'"+accountName+"'" + ";";			
 			stmt.executeUpdate(sqlQuery);						
 		    stmt.close();	
 		    con.commit();
-		    con.close();	
-		    util.writeLogFile( "Selected Head deleted Successfully...");
+		    con.close();			   
 	  } 
 	  catch (SQLException e) {		
 		  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
@@ -107,10 +95,12 @@ public class DBActionsImpl implements DBActions {
 				 String  acc       = rs.getString("ACCOUNT"); 							 
 				 String  userName  = rs.getString("USERNAME");
 		         String  password  = rs.getString("PASSWORD");
+		         String  category  = rs.getString("CATEGORY");
 		         
-		         aCC.setNewAccountName(acc);;	
+		         aCC.setNewAccountName(acc);	
 		         aCC.setNewAccountUsername(userName);
-		         aCC.setNewAccountPassword(password);		                 
+		         aCC.setNewAccountPassword(password);	
+		         aCC.setCategory(category);
 		     }			
 			rs.close();
 		    stmt.close();						
@@ -134,8 +124,7 @@ public class DBActionsImpl implements DBActions {
 			 sqlQuery = "INSERT INTO PCATEGORY (CATEGORY) VALUES ('" + category + "'" + ")" + ";";			    				 
 			 stmt.executeUpdate(sqlQuery);
 			 con.commit();
-			 stmt.close();
-			 util.writeLogFile( "\nValues Inserted into DB Successfully!!");
+			 stmt.close();			
 		 } 
 		 catch (SQLException e){			 
 			 util.writeLogFile( e.getClass().getName() + ": " + e.getMessage());			 			 			 			 		

@@ -45,26 +45,21 @@ public class AccountRepository {
 	public void removeAccount (Account account){
 		
 	}	
-	public String[] GetAll(String formattedCategory){		
-		//Category cat = CategoryRepository.getInstance().getCategoryByFormattedName(formattedCategory);
+	public String[] GetAll(String formattedCategory){				
 		int cnt = 0;
 		String delimiter = " [(] ";
 		String [] cat = formattedCategory.split(delimiter);		
 		qData = dbActions.getExistingAccounts(cat[0]);
-		if(qData.getAccount()!=null)
-		{
+		if(qData.getAccount()!=null){
 			cnt = qData.getAccount().length;
 		}
 		String [] items = new String [cnt];
 		int index=0;
 		if(qData.getAccount()!=null){		 
 	    	for(String account: qData.getAccount()){				    		 											 
-				 items[index++] = account;	
-				// There is a Bug here to be fixed, as I am initializing the count to zero, if if(qData.getAccount()!=null) 
-				 //then it fetchs a null value and will break the code in detailspage1 line 100.
+				 items[index++] = account;					
 		    }
-	    }
-					  
+	    }			  
 		return items;
     }
 	public String [] getAccountDetails(String account){

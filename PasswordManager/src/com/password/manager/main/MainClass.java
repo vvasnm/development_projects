@@ -12,6 +12,7 @@ public class MainClass {
 		Shell shell = new Shell();	
 		//LoginPage1 login = new LoginPage1(shell, 0);
 		DetailsPage1 login = new DetailsPage1(shell, 0);
-		login.open();		
+		login.open();
+		
 	}
 }

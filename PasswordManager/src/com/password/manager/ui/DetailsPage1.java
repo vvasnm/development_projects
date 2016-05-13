@@ -65,7 +65,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
-		}
+		}		
 		return result;
 	}
 	private void createContents() {								
@@ -97,7 +97,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 			public void widgetSelected(SelectionEvent e) {				
 			    if(lstCategory.getSelectionCount()>0){			    	
 			    	String [] items = AccountRepository.getInstance().GetAll(lstCategory.getSelection()[0]);
-			    	if(items!=null){
+			    	if((items!=null) && (items.length!=0)){
 			    		listAccounts.setItems(items);
 				    	listAccounts.setEnabled(true);
 			    	}
@@ -482,6 +482,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		});*/
 		btnUpdate.setText("Update");
 		new Label(cmpView, SWT.NONE);
+		
 	}	
 	private void clearWidgets(){
 		txtAccountName.setText("");

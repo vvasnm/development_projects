@@ -7,6 +7,7 @@ import com.password.manager.bean.Category;
 import com.password.manager.bean.QueryData;
 import com.password.manager.dao.impl.DBActionsImpl;
 import com.password.manager.listeners.IListenEvents;
+import com.password.manager.util.PMUtilities;
 
 public class CategoryRepository {
 
@@ -15,12 +16,14 @@ public class CategoryRepository {
 	private static CategoryRepository _categoryRepository = new CategoryRepository();
 	private ArrayList<IListenEvents> categoryEventListeners = new ArrayList<IListenEvents>();
 	private HashMap <String,Category> hashCategories = new HashMap<String,Category>();
+	PMUtilities util = new PMUtilities();
 	
 	public static CategoryRepository getInstance(){
 		return _categoryRepository;
 	}	
 	private CategoryRepository(){
 		qData = dbActions.getCategoriesFromDB();
+		util.writeLogFile ("qData.getCategory().." + qData.getCategory());
 		if(qData.getCategory()!=null){		
 			for(String itm: qData.getCategory()){
 				Category cat =	new Category(itm);

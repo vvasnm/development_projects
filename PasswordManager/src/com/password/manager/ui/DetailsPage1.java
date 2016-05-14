@@ -19,7 +19,7 @@ import com.password.manager.listeners.IListenEvents;
 import com.password.manager.repositories.AccountRepository;
 import com.password.manager.repositories.CategoryRepository;
 import com.password.manager.util.Constants;
-import com.password.manager.util.Utilities;
+import com.password.manager.util.PMUtilities;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -43,7 +43,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 	private Label lblExistingCategory;
 	private Button btnUpdate;  
             
-    Utilities util_1 = new Utilities();
+    PMUtilities util_1 = new PMUtilities();
     
 	public DetailsPage1(Shell parent, int style) {
 		super(parent, style);	

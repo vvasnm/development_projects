@@ -15,9 +15,9 @@ import com.password.manager.bean.PMData;
 import com.password.manager.dao.DBConnection;
 
 
-public class Utilities {
+public class PMUtilities {
 	
-	public Utilities(){		
+	public PMUtilities(){		
 		super();		
 	}
     Shell shell = new Shell();

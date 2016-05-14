@@ -11,11 +11,11 @@ import com.password.manager.bean.Account;
 import com.password.manager.bean.QueryData;
 import com.password.manager.dao.DBActions;
 import com.password.manager.dao.DBConnection;
-import com.password.manager.util.Utilities;
+import com.password.manager.util.PMUtilities;
 
 public class DBActionsImpl implements DBActions {
 
-	Utilities util = new Utilities();	
+	PMUtilities util = new PMUtilities();	
 	@Override
 	public void createNewAccount(Account acc) {
 		util.writeLogFile( "\nI am inside the insertPMDetails...function");		

@@ -12,7 +12,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
 
 import com.password.manager.bean.PMData;
-import com.password.manager.util.Utilities;
+import com.password.manager.util.PMUtilities;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -143,7 +143,7 @@ public class NewUserCreation extends Dialog {
 				Shell shell  = new Shell();
 				PMData pmdata = new PMData();	
 				LoginPage1 page = new LoginPage1(shell, 0);
-				Utilities util = new Utilities();
+				PMUtilities util = new PMUtilities();
 //Getting the values and setting the values to PMData Pojo.							
 				setUserDetails(pmdata);
 				util.createUserProfile(pmdata,shlNewUserCreation);

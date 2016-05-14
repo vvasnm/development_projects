@@ -21,7 +21,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import com.password.manager.bean.PMData;
 import com.password.manager.util.Constants;
 import com.password.manager.util.DBConstants;
-import com.password.manager.util.Utilities;
+import com.password.manager.util.PMUtilities;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.wb.swt.ResourceManager;
 
@@ -39,7 +39,7 @@ public class LoginPage1 extends Dialog {
 		super(parent, style);
 		setText("SWT Dialog");
 	}	
-	Utilities util_1 = new Utilities();
+	PMUtilities util_1 = new PMUtilities();
 	public Object open() {
 		createContents();
 		shlPasswordVault.open();

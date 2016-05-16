@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import com.password.manager.bean.PMData;
+import com.password.manager.bean.UserData;
 import com.password.manager.dao.DBConnection;
 
 
@@ -22,16 +22,16 @@ public class PMUtilities {
 	}
     Shell shell = new Shell();
    // static Logger log = Logger.getLogger(Utilities.class.getName());	
-	public void createUserProfile(PMData pmdata,Shell shl){
+	public void createUserProfile(String sno,String name,String userid,String password){
 		int rowCnt = 0;						
 	//	createUserTable();				
 		rowCnt = rowCount(Constants.DB_USER_TABLE);		
 		if (rowCnt == 0){
 			// in this way we are restricting the application is only for single user.
-			insertUserInfo(pmdata);
+			insertUserInfo(sno,name,userid,password);
 		}
 		else{
-			//writeLogFile( "\nI am inside the else of createUserProfile... ");
+			Shell shl = new Shell();
 			MessageBox mBox = new MessageBox(shl,0);
 			mBox.setMessage(Constants.UNIQUE_USER_ERROR);			
 			mBox.open();
@@ -82,7 +82,7 @@ public class PMUtilities {
 	}
 	
 	// This function is used at the time of new user creation.
-	public void insertUserInfo(PMData pmdata){
+	public void insertUserInfo(String sno,String name,String userid,String password){
 		writeLogFile("Inside insertUserInfo function...");
 		try {  
 			 Connection con = DBConnection.getDBConnection(); 
@@ -92,9 +92,9 @@ public class PMUtilities {
 		     String SemoColon     = ";";
 		     String Quote1        = "'";
 		     
-		     int sNo = Integer.parseInt(pmdata.getNewUserSno());
+		     int sNo = Integer.parseInt(sno);
 		                            //"(1,'DBSBANK','svad','12345');";   
-		     String valueString1  = OpenBracket + sNo +",".concat(Quote1).concat(pmdata.getNewUser()).concat(Quote1).concat(",").concat(Quote1).concat(pmdata.getNewUserID()).concat(Quote1).concat(",").concat(Quote1).concat(pmdata.getNewUserPassword()).concat(Quote1).concat(ClosedBracket).concat(SemoColon);
+		     String valueString1  = OpenBracket + sNo +",".concat(Quote1).concat(name).concat(Quote1).concat(",").concat(Quote1).concat(userid).concat(Quote1).concat(",").concat(Quote1).concat(password).concat(Quote1).concat(ClosedBracket).concat(SemoColon);
 		     
 			 Statement stmt = null;
 			 String sqlQuery = null;
@@ -116,7 +116,7 @@ public class PMUtilities {
 	}			
 	// This function is used to validate username/password at the time of login.
 	
-	private PMData queryCretentials(PMData pmdata){		
+	private UserData queryCretentials(UserData pmdata){		
 		Connection con = null;			
 		con  = DBConnection.getDBConnection();			
 		try {						
@@ -145,9 +145,9 @@ public class PMUtilities {
 	  }	      			
 		return pmdata;
 	}	
-	public boolean isUserValid (PMData pmdata){		
+	public boolean isUserValid (UserData pmdata){		
 		boolean isValid = false;	    
-		PMData data1 = queryCretentials(pmdata);					
+		UserData data1 = queryCretentials(pmdata);					
 		if ((data1.getUserNameDB().equals(pmdata.getUsername())) 
 			&& (data1.getPassWordDB().equals(pmdata.getPassword()))){
 		    isValid = true;	

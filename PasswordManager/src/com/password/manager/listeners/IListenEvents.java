@@ -8,5 +8,6 @@ public interface IListenEvents {
 	void categoryDeleted(String formattedCategoryName);
 	void accountAdded(Account account, Category category); 
 	void deleteAccount(String accountName,Category category);
+	//void deleteAccountCategoryPage(String accountName,Category category);
 	
 }

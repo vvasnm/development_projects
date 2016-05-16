@@ -57,7 +57,7 @@ public class CategoryRepository {
     		return;
     	}
     	String catName = matchingCat.getName();
-		qData.setCategoryTobeRemoved(catName);
+		qData.setCategoryTobeRemoved(catName.toUpperCase());
 		dbActions.deleteFromCategory(qData);		
 		hashCategories.remove(catName);
 		for (IListenEvents categoryEventListener : categoryEventListeners)

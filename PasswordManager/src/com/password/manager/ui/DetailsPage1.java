@@ -197,7 +197,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 		gd_cmpAddAccounts.heightHint = 220;
 		cmpAddAccounts.setLayoutData(gd_cmpAddAccounts);
 		new Label(cmpAddAccounts, SWT.NONE);
-		
+
 		Label lblAddNewAccount = new Label(cmpAddAccounts, SWT.NONE);
 		lblAddNewAccount.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		lblAddNewAccount.setText("Add New Account");
@@ -549,6 +549,11 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 			} 
 		}	
 	}
+	/*@Override
+	public void deleteAccountCategoryPage(String accountName, Category category) {
+		System.out.println("In details page");
+		
+	}*/
 		
 }
 

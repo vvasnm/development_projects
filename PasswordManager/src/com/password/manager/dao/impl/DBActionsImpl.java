@@ -139,7 +139,7 @@ public class DBActionsImpl implements DBActions {
 			 Statement stmt = null;
 			 String sqlQuery = null;
 			 stmt = con.createStatement();
-			 String category = qData.getCategoryTobeRemoved();
+			 String category = qData.getCategoryTobeRemoved().toUpperCase();
 			 sqlQuery = "DELETE FROM PCATEGORY WHERE CATEGORY= "+"'"+category+"'" + ";";							    				 
 			 stmt.executeUpdate(sqlQuery);
 			 con.commit();

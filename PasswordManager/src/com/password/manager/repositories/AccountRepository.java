@@ -49,6 +49,7 @@ public class AccountRepository {
 		cat.setAccCnt(cnt);
 		for (IListenEvents eventListener : eventListeners){				
 			 eventListener.deleteAccount(accountName,cat);
+			 //eventListener.deleteAccountCategoryPage(accountName,cat);
 		 }
 	}
 	

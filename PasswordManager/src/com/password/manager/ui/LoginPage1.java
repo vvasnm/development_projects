@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.wb.swt.SWTResourceManager;
-import com.password.manager.bean.PMData;
+import com.password.manager.bean.UserData;
 import com.password.manager.util.Constants;
 import com.password.manager.util.DBConstants;
 import com.password.manager.util.PMUtilities;
@@ -157,7 +157,8 @@ public class LoginPage1 extends Dialog {
 		lnkSignup.addSelectionListener(new SelectionAdapter() {			
 			public void widgetSelected(SelectionEvent e) {				
 				Shell shell = new Shell();
-				NewUserCreation newuser = new NewUserCreation(shell, 0);
+				//NewUserCreation newuser = new NewUserCreation(shell, 0);
+				NewUserCreationPage newuser = new NewUserCreationPage(shell, 0);
 				shlPasswordVault.close();
 				newuser.open();	
 			}
@@ -174,7 +175,7 @@ public class LoginPage1 extends Dialog {
 		btnLogin.addSelectionListener(new SelectionAdapter() {			
 			public void widgetSelected(SelectionEvent e) {				
 				Shell shell = new Shell();
-				PMData pmdata = new PMData();
+				UserData pmdata = new UserData();
 				
 				DetailsPage1 mPage = new DetailsPage1(shell, 0);								
 				pmdata.setPassword(txtPassword.getText());				

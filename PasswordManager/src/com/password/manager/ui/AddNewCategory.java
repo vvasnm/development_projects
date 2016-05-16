@@ -4,6 +4,8 @@ import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Rectangle;
@@ -11,6 +13,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
+import org.w3c.dom.events.EventException;
+
+import com.password.manager.bean.Account;
+import com.password.manager.bean.Category;
+import com.password.manager.listeners.IListenEvents;
+import com.password.manager.repositories.AccountRepository;
 import com.password.manager.repositories.CategoryRepository;
 import com.password.manager.util.Constants;
 import org.eclipse.swt.widgets.Button;
@@ -19,7 +27,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Monitor;
 
-public class AddNewCategory extends Dialog {
+public class AddNewCategory extends Dialog implements IListenEvents{
 
 	protected Object    result;
 	protected Shell     shlAddNewCategory;
@@ -30,7 +38,8 @@ public class AddNewCategory extends Dialog {
 	private   List      listExistingCategory;// this has to be propagated up
 	  
 	public AddNewCategory(Shell parent, int style) {
-		super(parent, style);		
+		super(parent, style);
+		AccountRepository.getInstance().addListener(this);
 	}
 	public Object open() {
 		createContents();
@@ -71,12 +80,40 @@ public class AddNewCategory extends Dialog {
 		gd_listExistingCategory.heightHint = 173;
 		listExistingCategory.setLayoutData(gd_listExistingCategory);		
 		listExistingCategory.setItems(CategoryRepository.getInstance().GetAll());
+		listExistingCategory.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {			
+				btnDeleteCategory.setEnabled(true);		
+			}
+		});
+		
+		
+		
 		lblNewCategory = new Label(cmpCategory, SWT.NONE);
 		lblNewCategory.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNewCategory.setText("Add New Category :");
 		
 		txtAddNewCategory = new Text(cmpCategory, SWT.BORDER);
 		txtAddNewCategory.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtAddNewCategory.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent ke) {								
+				if((txtAddNewCategory!=null) && (txtAddNewCategory.getText()!="")){
+					btnSaveCategory.setEnabled(true);					 	
+				}
+				else{
+					btnSaveCategory.setEnabled(false);						
+				}									
+			}
+			public void keyReleased(KeyEvent ke) {
+				if((txtAddNewCategory!=null) && (txtAddNewCategory.getText()!="")){
+					btnSaveCategory.setEnabled(true);					 	
+				}
+				else{
+					btnSaveCategory.setEnabled(false);						
+				}				    
+			}
+		});	
 		
 		cmpInstructions = new Composite(shlAddNewCategory, SWT.NONE);
 		cmpInstructions.setLayout(new GridLayout(1, false));
@@ -103,26 +140,36 @@ public class AddNewCategory extends Dialog {
 		gd_btnSaveCategory.widthHint = 210;
 		btnSaveCategory.setLayoutData(gd_btnSaveCategory);
 		btnSaveCategory.setText(Constants.SAVE_CATEGORY_TOOLTIP);
+		btnSaveCategory.setEnabled(false);
 		btnSaveCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {			
-				if((txtAddNewCategory.getText()!=null) && (txtAddNewCategory.getText()!=""))
-				{
-					CategoryRepository.getInstance().Add(txtAddNewCategory.getText());
-					listExistingCategory.setItems(CategoryRepository.getInstance().GetAll());
-					txtAddNewCategory.setText("");					
-				}else{
-					MessageBox mBox = new MessageBox(shlAddNewCategory);
-					mBox.setMessage(Constants.EMPTY_FIELDS);
-					mBox.open();
-				}				
+				try{
+					if((txtAddNewCategory.getText()!=null) && (txtAddNewCategory.getText()!=""))
+					{
+						CategoryRepository.getInstance().Add(txtAddNewCategory.getText());
+						listExistingCategory.setItems(CategoryRepository.getInstance().GetAll());
+						txtAddNewCategory.setText("");
+						btnSaveCategory.setEnabled(false);
+						
+					}else{
+						MessageBox mBox = new MessageBox(shlAddNewCategory);
+						mBox.setMessage(Constants.EMPTY_FIELDS);
+						mBox.open();
+					}	
+					
+				}catch(EventException ex){
+					ex.printStackTrace();
+				}
+							
 			}
 		});
 		btnDeleteCategory = new Button(cmpButtons, SWT.NONE);
 		GridData gd_btnDeleteCategory = new GridData(SWT.RIGHT, SWT.RIGHT, false, false, 1, 1);
 		gd_btnDeleteCategory.widthHint = 215;
 		btnDeleteCategory.setLayoutData(gd_btnDeleteCategory);
-		btnDeleteCategory.setText(Constants.DELETE_CATEGORY_TIP);							
+		btnDeleteCategory.setText(Constants.DELETE_CATEGORY_TIP);	
+		btnDeleteCategory.setEnabled(false);
 		btnDeleteCategory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e){				
@@ -145,5 +192,32 @@ public class AddNewCategory extends Dialog {
 				}								
 			}
 		});						
+	}
+	@Override
+	public void categoryAdded(Category category) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void categoryDeleted(String formattedCategoryName) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void accountAdded(Account account, Category category) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void deleteAccount(String accountName,Category category) {		
+		String catName = category.getName();
+		System.out.println("Cat Name..." +  catName);
+		String [] Items = listExistingCategory.getItems();
+		for (String itm : Items){
+			if(itm.startsWith(catName)){									
+				listExistingCategory.add(category.accountCount(), listExistingCategory.indexOf(itm));				
+				listExistingCategory.remove(itm);								
+			} 
+		}	
 	}
 }

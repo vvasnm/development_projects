@@ -1,6 +1,6 @@
 package com.password.manager.bean;
 
-public class PMData {
+public class UserData {
 		
 	private String username = null;
 	private String password = null;

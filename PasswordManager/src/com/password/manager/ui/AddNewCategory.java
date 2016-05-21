@@ -14,11 +14,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
 import org.w3c.dom.events.EventException;
-
-import com.password.manager.bean.Account;
-import com.password.manager.bean.Category;
-import com.password.manager.listeners.IListenEvents;
-import com.password.manager.repositories.AccountRepository;
 import com.password.manager.repositories.CategoryRepository;
 import com.password.manager.util.Constants;
 import org.eclipse.swt.widgets.Button;
@@ -27,7 +22,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Monitor;
 
-public class AddNewCategory extends Dialog implements IListenEvents{
+public class AddNewCategory extends Dialog {
 
 	protected Object    result;
 	protected Shell     shlAddNewCategory;
@@ -38,8 +33,7 @@ public class AddNewCategory extends Dialog implements IListenEvents{
 	private   List      listExistingCategory;// this has to be propagated up
 	  
 	public AddNewCategory(Shell parent, int style) {
-		super(parent, style);
-		AccountRepository.getInstance().addListener(this);
+		super(parent, style);		
 	}
 	public Object open() {
 		createContents();
@@ -85,10 +79,7 @@ public class AddNewCategory extends Dialog implements IListenEvents{
 			public void widgetSelected(SelectionEvent e) {			
 				btnDeleteCategory.setEnabled(true);		
 			}
-		});
-		
-		
-		
+		});		
 		lblNewCategory = new Label(cmpCategory, SWT.NONE);
 		lblNewCategory.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNewCategory.setText("Add New Category :");
@@ -193,31 +184,5 @@ public class AddNewCategory extends Dialog implements IListenEvents{
 			}
 		});						
 	}
-	@Override
-	public void categoryAdded(Category category) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void categoryDeleted(String formattedCategoryName) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void accountAdded(Account account, Category category) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void deleteAccount(String accountName,Category category) {		
-		String catName = category.getName();
-		System.out.println("Cat Name..." +  catName);
-		String [] Items = listExistingCategory.getItems();
-		for (String itm : Items){
-			if(itm.startsWith(catName)){									
-				listExistingCategory.add(category.accountCount(), listExistingCategory.indexOf(itm));				
-				listExistingCategory.remove(itm);								
-			} 
-		}	
-	}
+	
 }

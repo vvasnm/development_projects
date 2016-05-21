@@ -22,8 +22,7 @@ public class CategoryRepository {
 		return _categoryRepository;
 	}	
 	private CategoryRepository(){
-		qData = dbActions.getCategoriesFromDB();
-		util.writeLogFile ("qData.getCategory().." + qData.getCategory());
+		qData = dbActions.getCategoriesFromDB();		
 		if(qData.getCategory()!=null){		
 			for(String itm: qData.getCategory()){
 				Category cat =	new Category(itm);
@@ -66,9 +65,8 @@ public class CategoryRepository {
 	public String[] GetAll(){
 		String[] items = new String[hashCategories.size()];
 		int index=0;
-		for(Iterator<Category> it = hashCategories.values().iterator(); it.hasNext();)
-		{
-			items[index++] = it.next().toString();
+		for(Iterator<Category> it = hashCategories.values().iterator(); it.hasNext();){			
+			items[index++] = it.next().toString();			
 		}    
 		return items;
     }

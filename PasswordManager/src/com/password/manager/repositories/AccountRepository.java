@@ -48,8 +48,7 @@ public class AccountRepository {
 		Category cat = new Category(category);
 		cat.setAccCnt(cnt);
 		for (IListenEvents eventListener : eventListeners){				
-			 eventListener.deleteAccount(accountName,cat);
-			 //eventListener.deleteAccountCategoryPage(accountName,cat);
+			 eventListener.deleteAccount(accountName,cat);			
 		 }
 	}
 	

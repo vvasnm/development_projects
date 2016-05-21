@@ -14,13 +14,12 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.wb.swt.SWTResourceManager;
-
 import com.password.manager.repositories.UserCeationRepository;
 import com.password.manager.util.Constants;
-import com.password.manager.util.PMUtilities;
-
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.wb.swt.ResourceManager;
 
 public class NewUserCreationPage extends Dialog {
 
@@ -31,6 +30,7 @@ public class NewUserCreationPage extends Dialog {
 	private Text txtUserID;
 	private Text txtPassword;
 	private Text txtRetypePassword;
+	private Text text;
 
 	public NewUserCreationPage(Shell parent, int style) {
 		super(parent, style);		
@@ -48,6 +48,7 @@ public class NewUserCreationPage extends Dialog {
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		shlNewUserCreation.setLocation(x, y);
+		new Label(shlNewUserCreation, SWT.NONE);
 		while (!shlNewUserCreation.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
@@ -58,7 +59,7 @@ public class NewUserCreationPage extends Dialog {
 
 	private void createContents() {
 		shlNewUserCreation = new Shell(getParent(), SWT.BORDER | SWT.MIN | SWT.TITLE | SWT.PRIMARY_MODAL);
-		shlNewUserCreation.setSize(500, 340);
+		shlNewUserCreation.setSize(500, 413);
 		shlNewUserCreation.setText("New User Creation Page");
 		shlNewUserCreation.setLayout(new GridLayout(2, false));
 		
@@ -74,11 +75,12 @@ public class NewUserCreationPage extends Dialog {
 		lblNewUserCreation.setText("New User Creation Page");
 		
 		Button btnBack = new Button(shlNewUserCreation, SWT.NONE);
+		btnBack.setImage(ResourceManager.getPluginImage("PasswordManager", "icons/home2.gif"));
 		btnBack.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		GridData gd_btnBack = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-		gd_btnBack.widthHint = 47;
+		gd_btnBack.heightHint = 31;
+		gd_btnBack.widthHint = 31;
 		btnBack.setLayoutData(gd_btnBack);
-		btnBack.setText("Back");
 		btnBack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {			
@@ -91,7 +93,7 @@ public class NewUserCreationPage extends Dialog {
 		Composite composite_1 = new Composite(shlNewUserCreation, SWT.NONE);
 		composite_1.setLayout(new GridLayout(2, false));
 		GridData gd_composite_1 = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-		gd_composite_1.heightHint = 166;
+		gd_composite_1.heightHint = 255;
 		composite_1.setLayoutData(gd_composite_1);
 		
 		Label lblSno = new Label(composite_1, SWT.NONE);
@@ -137,6 +139,23 @@ public class NewUserCreationPage extends Dialog {
 		
 		txtRetypePassword = new Text(composite_1, SWT.BORDER | SWT.PASSWORD);
 		txtRetypePassword.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(composite_1, SWT.NONE);
+		
+		Label lblQuestion1 = new Label(composite_1, SWT.NONE);
+		lblQuestion1.setFont(SWTResourceManager.getFont("Segoe UI", 10, SWT.BOLD));
+		lblQuestion1.setText("Security Questions");
+		
+		Label lblQuestion_1 = new Label(composite_1, SWT.NONE);
+		lblQuestion_1.setText("   Question :");
+		
+		Combo combo = new Combo(composite_1, SWT.READ_ONLY);
+		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label lblAnswer_1 = new Label(composite_1, SWT.NONE);
+		lblAnswer_1.setText("   Answer :");
+		
+		text = new Text(composite_1, SWT.BORDER);
+		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(shlNewUserCreation, SWT.NONE);
 		
 		Button btnCreate = new Button(shlNewUserCreation, SWT.NONE);
@@ -144,7 +163,6 @@ public class NewUserCreationPage extends Dialog {
 		gd_btnCreate.widthHint = 103;
 		btnCreate.setLayoutData(gd_btnCreate);
 		btnCreate.setText("Create User");
-		new Label(shlNewUserCreation, SWT.NONE);
 		btnCreate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {			

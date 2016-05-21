@@ -40,6 +40,7 @@ public class LoginPage1 extends Dialog {
 		setText("SWT Dialog");
 	}	
 	PMUtilities util_1 = new PMUtilities();
+	private Link lnkforgotPass;
 	public Object open() {
 		createContents();
 		shlPasswordVault.open();
@@ -146,7 +147,7 @@ public class LoginPage1 extends Dialog {
 		cmpNewUserSignup = new Composite(cmpMain, SWT.NONE);
 		cmpNewUserSignup.setLayout(new GridLayout(2, false));
 		GridData gd_cmpNewUserSignup = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
-		gd_cmpNewUserSignup.heightHint = 62;
+		gd_cmpNewUserSignup.heightHint = 33;
 		cmpNewUserSignup.setLayoutData(gd_cmpNewUserSignup);
 //lblNewUser	
 		lblNewUser = new Label(cmpNewUserSignup, SWT.NONE);
@@ -163,52 +164,65 @@ public class LoginPage1 extends Dialog {
 				newuser.open();	
 			}
 		});
-//btnLogin		
-		btnLogin = new Button(cmpMain, SWT.NONE);
-		btnLogin.setImage(ResourceManager.getPluginImage("PasswordManager", "icons/lock.gif"));
-		btnLogin.setToolTipText("Enter username & password to login to password VAULT ");
-		GridData gd_btnLogin = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
-		gd_btnLogin.widthHint = 121;
-		btnLogin.setLayoutData(gd_btnLogin);
-		btnLogin.setText("Login Here");	
-		btnLogin.setEnabled(false);
-		btnLogin.addSelectionListener(new SelectionAdapter() {			
-			public void widgetSelected(SelectionEvent e) {				
-				Shell shell = new Shell();
-				UserData pmdata = new UserData();
 				
-				DetailsPage1 mPage = new DetailsPage1(shell, 0);								
-				pmdata.setPassword(txtPassword.getText());				
-				pmdata.setUsername(txtUsername.getText());															
-				String folder = System.getenv("TEMP");
-				int rowsCnt = util_1.rowCount(DBConstants.USER_TABLE);
-				if(rowsCnt>0){
-					if (util_1.isUserValid(pmdata)) {						
-						shlPasswordVault.close();													
-						if(shell!=null){
-						    mPage.open();
-							util_1.writeLogFile("Login Successful,Opening the details page.");
-							util_1.clearFiles(folder);	
-						}						
-					}	
-					else {
-						util_1.writeLogFile("\nIncorrect Passowrd.");
-						txtPassword.setText("");
-						txtUsername.setText("");
-						MessageBox mBox = new MessageBox(shlPasswordVault, 0);
-						mBox.setMessage(Constants.INCORRECT_CREDNTIALS);
-						mBox.open();						
+				lnkforgotPass = new Link(cmpMain, SWT.NONE);
+				lnkforgotPass.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
+				lnkforgotPass.setText("<a>Forgot Password?</a>");
+				lnkforgotPass.addSelectionListener(new SelectionAdapter() {			
+					public void widgetSelected(SelectionEvent e) {				
+						Shell shell = new Shell();
+						//NewUserCreation newuser = new NewUserCreation(shell, 0);
+						NewUserCreationPage newuser = new NewUserCreationPage(shell, 0);
+						shlPasswordVault.close();
+						newuser.open();	
 					}
-				}
-				else{
-					util_1.writeLogFile("\nNo User Exist.");
-					txtPassword.setText("");
-					txtUsername.setText("");
-					MessageBox mBox = new MessageBox(shlPasswordVault, 0);
-					mBox.setMessage(Constants.NO_DATA_ERROR);
-					mBox.open();
-				}	
-			}
-		});	
+				});
+		//btnLogin		
+				btnLogin = new Button(cmpMain, SWT.NONE);
+				btnLogin.setImage(ResourceManager.getPluginImage("PasswordManager", "icons/lock.gif"));
+				btnLogin.setToolTipText("Enter username & password to login to password VAULT ");
+				GridData gd_btnLogin = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
+				gd_btnLogin.widthHint = 121;
+				btnLogin.setLayoutData(gd_btnLogin);
+				btnLogin.setText("Login Here");	
+				btnLogin.setEnabled(false);
+				btnLogin.addSelectionListener(new SelectionAdapter() {			
+					public void widgetSelected(SelectionEvent e) {				
+						Shell shell = new Shell();
+						UserData pmdata = new UserData();
+						
+						DetailsPage1 mPage = new DetailsPage1(shell, 0);								
+						pmdata.setPassword(txtPassword.getText());				
+						pmdata.setUsername(txtUsername.getText());															
+						String folder = System.getenv("TEMP");
+						int rowsCnt = util_1.rowCount(DBConstants.USER_TABLE);
+						if(rowsCnt>0){
+							if (util_1.isUserValid(pmdata)) {						
+								shlPasswordVault.close();													
+								if(shell!=null){
+								    mPage.open();
+									util_1.writeLogFile("Login Successful,Opening the details page.");
+									util_1.clearFiles(folder);	
+								}						
+							}	
+							else {
+								util_1.writeLogFile("\nIncorrect Passowrd.");
+								txtPassword.setText("");
+								txtUsername.setText("");
+								MessageBox mBox = new MessageBox(shlPasswordVault, 0);
+								mBox.setMessage(Constants.INCORRECT_CREDNTIALS);
+								mBox.open();						
+							}
+						}
+						else{
+							util_1.writeLogFile("\nNo User Exist.");
+							txtPassword.setText("");
+							txtUsername.setText("");
+							MessageBox mBox = new MessageBox(shlPasswordVault, 0);
+							mBox.setMessage(Constants.NO_DATA_ERROR);
+							mBox.open();
+						}	
+					}
+				});
 	}
 }

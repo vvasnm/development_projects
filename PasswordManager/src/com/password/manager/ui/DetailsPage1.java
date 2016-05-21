@@ -349,7 +349,7 @@ public class DetailsPage1 extends Dialog implements IListenEvents{
 					if(isRetypePasswordMatched()){						
 						AccountRepository.getInstance().addAccount(txtAccountName.getText().toUpperCase(),
 								                                   txtUsername.getText().toUpperCase(), 
-								                                   txtPassword.getText().toUpperCase(),
+								                                   txtPassword.getText(),
 								                                   cmbCategory.getText().toUpperCase());
 						
 						clearWidgets();
